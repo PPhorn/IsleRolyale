@@ -1,0 +1,81 @@
+\documentclass[a4paper]{report}
+\usepackage{tikz}
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{hyperref}
+\usepackage{graphicx}
+\graphicspath{{figures/}{anotherFigureDirectory/}}
+\graphicspath{ {./images/} }
+\usepackage{listings}
+\usepackage{wrapfig}
+\usepackage{color}
+\definecolor{bluekeywords}{rgb}{0.13,0.13,1}
+\definecolor{greencomments}{rgb}{0,0.5,0}
+\definecolor{turqusnumbers}{rgb}{0.17,0.57,0.69}
+\definecolor{redstrings}{rgb}{0.5,0,0}
+\definecolor{gray}{rgb}{0.13,0.13,0.13}
+\lstdefinelanguage{FSharp}
+                {morekeywords={let, new, match, with, rec, open, module,
+                namespace, type, of, member, and, for, in, do, begin, end, fun,
+                function, try, mutable, if, then, else},
+                keywordstyle=\color{bluekeywords},
+                sensitive=false,
+                numbers=left,  % where to put the line-numbers;(none, left, right)
+                numberstyle=\tiny\color{gray},
+                morecomment=[l][\color{greencomments}]{///},
+                morecomment=[l][\color{greencomments}]{//},
+                morecomment=[s][\color{greencomments}]{{(*}{*)}},
+                morestring=[b]",
+                showstringspaces=false,
+                stringstyle=\color{redstrings}
+                }
+
+\title{PoP - Ugeopgave 10}
+\author{Christoffer, Inge og Pernille}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\section*{To-Do liste}
+
+\begin{enumerate}
+
+\item Skriv kode for "tick"-funktionen, der styrer tiden for spillet og implementer ticks funktionen i de øvrige objekter (se Jons kommentarer i koden).
+
+This.tick funktionerne skal relateres til, at ulven tjekker, om der er et Moose i et nabofelt, hvis ja: skal ulven rykkes til Moose'ets felt, Moose'et fjernes og ulvens sult resetes.
+
+Ulvens sult skal relateres til tick's, så hver gang der er gået et tick, kaldes metoden for ulvens sult (en funktion der allerede er givet), som tæller sulten 1 værdi ned.
+
+For hvert tick, skal en ulvs sult tjekkes, hvis sulten er nået 0, skal ulven dø -> fjernes fra miljøet.
+\item Hvordan spiser en ulv en elg?
+\item Hvordan indsættes ungerne?
+\item Hvad betyder rnd.Next? Særligt i tilknytning til reproduction.
+\item n
+\item n
+\item n
+\item n
+
+\end{enumerate}
+
+\newpage
+
+\subsection*{Introduction}
+
+\subsection*{Problemanalyse \& design}
+
+\subsection*{Programbeskrivelse}
+
+\subsection*{Test (afprøvning)}
+
+\subsection*{Eksperiment}
+
+\subsection*{Konklussion}
+
+\newpage
+\section*{Bilag}
+
+\subsection*{Brugervejledning}
+
+\subsection*{Programtekst}
+
+\end{document}

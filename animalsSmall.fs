@@ -64,6 +64,9 @@ type wolf (repLen : int, hungLen : int) =
   member this.resetHunger () =
     _hunger <- hungLen
   member this.tick () : wolf option =
+    this.updateWolfAge ()
+    this.updateReproduction ()
+    this.updateHunger ()
     None // Intentionally left blank. Insert code that updates the wolf's age and optionally an offspring.
 // updateHunger skal kaldes for hvert tick.
 // Opdater ulvens alder.
@@ -125,3 +128,13 @@ type environment (boardWidth : int, NMooses : int, mooseRepLen : int, NWolves : 
         ret <- ret + string arr.[i,j] + " "
       ret <- ret + "\n"
     ret
+
+let newMoose = moose (3)
+printfn "%A" (newMoose.reproduction)
+newMoose.updateReproduction ()
+printfn "%A" (newMoose.reproduction)
+newMoose.resetReproduction()
+printfn "%A" (newMoose.reproduction)
+printfn "%A" (newMoose.mooseAge)
+newMoose.updateMooseAge ()
+printfn "%A" (newMoose.mooseAge)
