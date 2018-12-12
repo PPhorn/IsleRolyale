@@ -32,6 +32,7 @@ type moose (repLen : int) =
   inherit animal (mSymbol, repLen)
   static let mutable mooseAge = 5
 
+  member this.mooseAge = mooseAge
   member this.updateMooseAge () =
     mooseAge <- mooseAge - 1
     if mooseAge = 0 then

@@ -34,7 +34,12 @@ type moose =
     /// <param name="repLen">The number of ticks until a moose attempts to produce an offspring.</param>
     new : repLen:int -> moose
     /// Perform a tick for this moose, i.e., call updateReproduction.
+    member mooseAge : int
+    /// Sets the initial lifetime of a moose
     member tick : unit -> moose option
+    member updateMooseAge : unit -> unit
+    /// Perform a tick for this moose, i.e., call updateMooseAge and return Some
+    /// or None Moose
   end
 /// A wolf is an animal with hunger and methods for updating its age and hunger and for reproducing offspring. If the wolf has not eaten in a specified number of ticks, then it is taken off the board.
 type wolf =
@@ -47,10 +52,15 @@ type wolf =
     /// Reduce the reproduction counter by a tick. If repLen is 0 then a new wolf is returned and the counter is reset to repLen.
     member hunger : int
     /// Set the hunger counter to hungLen.
+    member wolfAge : int
+    /// Sets the initial lifetime of a wolf
     member resetHunger : unit -> unit
     /// Reduce the hunger counter by a tick. If hunger reaches 0, then the wolf is removed from the board.
     member updateHunger : unit -> unit
     /// Perform a tick for this wolf, i.e., call updateReproduction and updateHunger and possibly returns cub.
+    member updateWolfAge : unit -> unit
+    /// Perform a tick for this wolf, i.e., call updateWolfAge and return Some or
+    /// None wolf
     member tick : unit -> wolf option
   end
 /// A square board with length width. The board is implicitly represented by its width and the coordinates in the animals.
