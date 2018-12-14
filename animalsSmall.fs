@@ -30,31 +30,25 @@ type animal (symb : symbol, repLen : int) =
 /// A moose is an animal
 type moose (repLen : int) =
   inherit animal (mSymbol, repLen)
-  static let mutable _mooseAge = 15
 
-  member this.mooseAge = _mooseAge
-  member this.updateMooseAge () =
-    _mooseAge <- _mooseAge - 1
-    if _mooseAge = 0 then
-      this.position <- None //Dies of old age
+  member this.giveBirth () =
+    this.updateReproduction ()
+    if this.reproduction = 0 then
+      Some (moose (repLen))
+    else
+      None
 
   member this.tick () : moose option =
-    this.updateMooseAge ()
-    this.updateReproduction ()
+    match this.position with
+    |Some position -> (this.giveBirth ())
+    |None -> None
 
-    None // Intentionally left blank. Insert code that updates the moose's age and optionally an offspring.
+    //None // Intentionally left blank. Insert code that updates the moose's age and optionally an offspring.
 
 /// A wolf is an animal with a hunger counter
 type wolf (repLen : int, hungLen : int) =
   inherit animal (wSymbol, repLen)
   let mutable _hunger = hungLen
-  static let mutable _wolfAge = 5
-
-  member this.wolfAge = _wolfAge
-  member this.updateWolfAge () =
-    _wolfAge <- _wolfAge - 1
-    if _wolfAge = 0 then
-      this.position <- None // Dies of old age
 
   member this.hunger = _hunger
   member this.updateHunger () =
@@ -63,11 +57,20 @@ type wolf (repLen : int, hungLen : int) =
       this.position <- None // Starve to death
   member this.resetHunger () =
     _hunger <- hungLen
-  member this.tick () : wolf option =
-    this.updateWolfAge ()
+
+  member this.giveBirth () =
     this.updateReproduction ()
-    this.updateHunger ()
-    None // Intentionally left blank. Insert code that updates the wolf's age and optionally an offspring.
+    if this.reproduction = 0 then
+      Some (wolf (repLen, hungLen))
+    else
+      None
+
+  member this.tick () : wolf option =
+    match this.position with
+    | Some position -> (this.updateHunger()); (this.giveBirth ())
+    | None -> None
+
+    // Intentionally left blank. Insert code that updates the wolf's age and optionally an offspring.
 // updateHunger skal kaldes for hvert tick.
 // Opdater ulvens alder.
 
@@ -131,10 +134,3 @@ type environment (boardWidth : int, NMooses : int, mooseRepLen : int, NWolves : 
 
 let newMoose = moose (3)
 printfn "%A" (newMoose.reproduction)
-newMoose.updateReproduction ()
-printfn "%A" (newMoose.reproduction)
-newMoose.resetReproduction()
-printfn "%A" (newMoose.reproduction)
-printfn "%A" (newMoose.mooseAge)
-newMoose.updateMooseAge ()
-printfn "%A" (newMoose.mooseAge)
