@@ -107,6 +107,17 @@ type environment (boardWidth : int, NMooses : int, mooseRepLen : int, NWolves : 
       j <- rnd.Next b.width
     (i,j)
 
+//
+  let checkNabour (b: board) (a: animal): position = //ba er board array'et som sager _board som input
+    let arr = draw b
+    let NabourCord = [|(-1, -1); (0, -1); (1, -1); (1, 0); (1, 1); (0, 1); (-1, 1); (-1, 0)|]
+    let mutable nabour = (0, 0)
+    for k = 0 to (NabourCord.Length) do
+      nabour <- a + (NabourCord.[k]) //returner en liste med tupler, der har informationer om naboerne, dvs. symbolerne på pladserne. Lav derefter en funktion, der håndtere situationen udfra, hvad der er i nabo koordinaterne.
+      //while arr[i,j] <> eSymbol do
+        //[(i,j)] <- NabourCord.[k + 1]
+    (i,j)
+
   // populate the board with animals placed at random. Bruger anyEmptyFiels til at finde et frit koordinat.
   do for m in _board.moose do
        m.position <- Some (anyEmptyField _board)
