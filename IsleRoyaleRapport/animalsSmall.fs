@@ -113,6 +113,31 @@ type environment (boardWidth : int, NMooses : int, mooseRepLen : int, NWolves : 
   do for w in _board.wolves do
        w.position <- Some (anyEmptyField _board)
 
+let updateMoose m = m
+
+let updateWolf w = w
+
+let rec processLists (mList: moose List), (wList : wolf List) =
+  let handleMoose m =
+    (let calf, msg) = updateMoose _board m
+
+  let handleWolf w =
+    let (cub, msg) = updateWolf _ board
+
+  match (mList, wList) with
+  | ([], []) -> ()
+  | ([], w :: wList) -> handleWolf w
+                        processLists ([], wList)
+  | (m :: mList, []) -> handleMoose m
+                        processLists (mList, [])
+  | (m :: mList, w :: wList) -> if rnd.Next (2) = 1 then
+                                handleMoose m
+                                processLists (mList, w::wList)
+                                else
+                                handleWolf w
+                                processLists (m::mList, wList)
+
+
 // bredden og højden
   member this.size = boardWidth*boardWidth
   member this.count = _board.moose.Length + _board.wolves.Length
