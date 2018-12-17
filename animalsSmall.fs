@@ -54,7 +54,7 @@ type wolf (repLen : int, hungLen : int) =
   member this.updateHunger () =
     _hunger <- _hunger - 1
     if _hunger <= 0 then
-      this.position <- None // Starve to death
+      this.position <- None // Starve to death. position skal måske håndteres i 
   member this.resetHunger () =
     _hunger <- hungLen
 
@@ -108,15 +108,60 @@ type environment (boardWidth : int, NMooses : int, mooseRepLen : int, NWolves : 
     (i,j)
 
 //
-  let checkNabour (b: board) (a: animal): position = //ba er board array'et som sager _board som input
+(*checkNabour returner en liste med tupler, der har informationer om naboerne, dvs.
+symbolerne på pladserne. Lav derefter en funktion, der håndtere
+situationen udfra, hvad der er i nabo koordinaterne.*)
+  let checkNabour (b: board) (a: animal) : list position * symbol = //ba er board array'et som tager _board som input
     let arr = draw b
     let NabourCord = [|(-1, -1); (0, -1); (1, -1); (1, 0); (1, 1); (0, 1); (-1, 1); (-1, 0)|]
     let mutable nabour = (0, 0)
     for k = 0 to (NabourCord.Length) do
-      nabour <- a + (NabourCord.[k]) //returner en liste med tupler, der har informationer om naboerne, dvs. symbolerne på pladserne. Lav derefter en funktion, der håndtere situationen udfra, hvad der er i nabo koordinaterne.
-      //while arr[i,j] <> eSymbol do
-        //[(i,j)] <- NabourCord.[k + 1]
+      nabour <- a.position + (NabourCord.[k])
+      while arr[i,j] <> eSymbol do
+        [(i,j)] <- NabourCord.[k + 1]
     (i,j)
+
+
+(* updateMoose undersøger om moose skal have en kalv, eller om den skal skifte
+ position.*)
+  let updateMoose (b: _board) (m: moose) =
+    if m.giveBirth () = Some then
+    // indsæt baby på en plads rundt om via checkNabour.
+    // update m-liste med en ny moose.
+    else
+    // flyt position et sted, hvor der er plads rundt om via checkNabour
+
+(* updateWolf undersøger om den kan spise en moose, om der er hvalp, eller om
+den skal flytte position. *)
+  let updateWolf (w: wolf) =
+    if //der er en moose rundt om, spis den. Benyt checkNabour.
+    elif m.giveBirth () = Some
+    // indsæt baby på en plads rundt om via checkNabour
+    else
+    w.hunger () = None
+ eller dø.
+
+
+  let rec processLists (mList: moose List), (wList : wolf List) =
+    let handleMoose m =
+      (let calf, msg) = updateMoose _board m
+
+    let handleWolf w =
+    //Undersøg om w skal dø af sult og slet en ulv fra listen.
+
+      let (cub, msg) = updateWolf _ board
+    match (mList, wList) with
+    | ([], []) -> ()
+    | ([], w :: wList) -> handleWolf w
+                          processLists ([], wList)
+    | (m :: mList, []) -> handleMoose m
+                          processLists (mList, [])
+    | (m :: mList, w :: wList) -> if rnd.Next (2) = 1 then
+                                  handleMoose m
+                                  processLists (mList, w::wList)
+                                  else
+                                  handleWolf w
+                                  processLists (m::mList, wList)
 
   // populate the board with animals placed at random. Bruger anyEmptyFiels til at finde et frit koordinat.
   do for m in _board.moose do
