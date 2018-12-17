@@ -30,18 +30,20 @@ type animal (symb : symbol, repLen : int) =
 /// A moose is an animal
 type moose (repLen : int) =
   inherit animal (mSymbol, repLen)
-  static let mutable mooseAge = 5
 
-  member this.mooseAge = mooseAge
-  member this.updateMooseAge () =
-    mooseAge <- mooseAge - 1
-    if mooseAge = 0 then
-      this.position <- None //Dies of old age
+  member this.giveBirth () =
+    this.updateReproduction ()
+    if this.reproduction = 0 then
+      Some (moose (repLen))
+    else
+      None
+
   member this.tick () : moose option =
+    match this.position with
+    |Some position -> (this.giveBirth ())
+    |None -> None
 
-    //match this.tick with
-    //|this.tick when this.tick =
-    None // Intentionally left blank. Insert code that updates the moose's age and optionally an offspring.
+    //None // Intentionally left blank. Insert code that updates the moose's age and optionally an offspring.
 
 /// A wolf is an animal with a hunger counter
 type wolf (repLen : int, hungLen : int) =
@@ -55,8 +57,22 @@ type wolf (repLen : int, hungLen : int) =
       this.position <- None // Starve to death
   member this.resetHunger () =
     _hunger <- hungLen
+
+  member this.giveBirth () =
+    this.updateReproduction ()
+    if this.reproduction = 0 then
+      Some (wolf (repLen, hungLen))
+    else
+      None
+
   member this.tick () : wolf option =
-    None // Intentionally left blank. Insert code that updates the wolf's age and optionally an offspring.
+    match this.position with
+    | Some position -> (this.updateHunger()); (this.giveBirth ())
+    | None -> None
+
+    // Intentionally left blank. Insert code that updates the wolf's age and optionally an offspring.
+// updateHunger skal kaldes for hvert tick.
+// Opdater ulvens alder.
 
 /// A board is a chess-like board implicitly representedy by its width and coordinates of the animals.
 type board =
@@ -91,12 +107,13 @@ type environment (boardWidth : int, NMooses : int, mooseRepLen : int, NWolves : 
       j <- rnd.Next b.width
     (i,j)
 
-  // populate the board with animals placed at random.
+  // populate the board with animals placed at random. Bruger anyEmptyFiels til at finde et frit koordinat.
   do for m in _board.moose do
        m.position <- Some (anyEmptyField _board)
   do for w in _board.wolves do
        w.position <- Some (anyEmptyField _board)
 
+// bredden og højden
   member this.size = boardWidth*boardWidth
   member this.count = _board.moose.Length + _board.wolves.Length
   member this.board = _board
@@ -114,3 +131,6 @@ type environment (boardWidth : int, NMooses : int, mooseRepLen : int, NWolves : 
         ret <- ret + string arr.[i,j] + " "
       ret <- ret + "\n"
     ret
+
+let newMoose = moose (3)
+printfn "%A" (newMoose.reproduction)
