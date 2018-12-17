@@ -113,17 +113,29 @@ type environment (boardWidth : int, NMooses : int, mooseRepLen : int, NWolves : 
   do for w in _board.wolves do
        w.position <- Some (anyEmptyField _board)
 
-let updateMoose m = m
+let updateMoose (b: _board) (m: moose) =
+  if m.giveBirth () = Some then
+    
+  // indsæt baby på en plads rundt om.
+  // update liste med en ny moose.
+  else
+  // flyt position et sted, hvor der er plads rundt om.
 
-let updateWolf w = w
+let updateWolf (w: wolf) =
+  if //der er en ulv rundt om, spis den.
+  elif m.giveBirth () = Some
+  // indsæt baby på en plads rundt om.
+  else
+  w.hunger () = None
+  // en ulv må der
+  // den skal undersøge om den skal have en baby, spise en moose, eller dø.
+
 
 let rec processLists (mList: moose List), (wList : wolf List) =
   let handleMoose m =
     (let calf, msg) = updateMoose _board m
-
   let handleWolf w =
     let (cub, msg) = updateWolf _ board
-
   match (mList, wList) with
   | ([], []) -> ()
   | ([], w :: wList) -> handleWolf w
