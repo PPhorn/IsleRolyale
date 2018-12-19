@@ -35,6 +35,11 @@
 
 \begin{document}
 \maketitle
+\tikzstyle{block} = [rectangle, draw, fill=blue!20, text centered,
+    rounded corners, minimum height=2.5em]
+\tikzstyle{cloud} = [rectangle, draw, fill=white, text centered,
+    rounded corners, minimum height = 2em]
+\tikzstyle{line} = [draw, -latex]
 
 \section*{To-Do liste}
 
@@ -47,9 +52,9 @@ This.tick funktionerne skal relateres til, at ulven tjekker, om der er et Moose 
 Ulvens sult skal relateres til tick's, så hver gang der er gået et tick, kaldes metoden for ulvens sult (en funktion der allerede er givet), som tæller sulten 1 værdi ned.
 
 For hvert tick, skal en ulvs sult tjekkes, hvis sulten er nået 0, skal ulven dø -> fjernes fra miljøet.
-\item 
-\item n
-\item n
+\item Hvordan spiser en ulv en elg?
+\item Hvordan indsættes ungerne?
+\item Hvad betyder rnd.Next? Særligt i tilknytning til reproduction.
 \item n
 \item n
 \item n
@@ -59,11 +64,89 @@ For hvert tick, skal en ulvs sult tjekkes, hvis sulten er nået 0, skal ulven d�
 
 \newpage
 
-\subsection*{Introduction}
+\section*{Preface}
+As our first semester course in Programming and Problem Solving has entered a new programming paradigm, namely object oriented (OO) programming, we, three budding computer scientists have build a small environment based on the small island Isle Royale. We've used the multi paradigm programming language Fsharp (F\#), to code our entire OO environment.
 
-\subsection*{Problemanalyse \& design}
+\section*{Introduction}
+Isle Royale is a small desolate island located in Lake Superior split by the North America-Canadian border. The island is inhabited by wolves and moose. The population of the two mammals, predator and prey have shown over time to be highly interdependent.
+Through no less than 5 decades the research project "Wolves and Moose of Isle Royale" has monitored the lives and deaths of the animals of the island, making \textit{"the longest continuous study of any predator-prey system in the world."} \url{(http://www.isleroyalewolf.org/overview/overview/at_a_glance.html)}
 
-\subsection*{Programbeskrivelse}
+
+
+\section*{Problemanalyse \& design}
+As given by the assignment, the entire Isle Royale environment is implemented in f\# by use of the object oriented programming paradigm.
+
+The main task of the assignment was to simulate the flow and development of the animal population of Isle Royale in an enclosed environment.
+
+From the offset of the assignment, we we're given an unfinished library and a corresponding signaturefile.
+Here we we're given an extended part of the code, which needed to be built in order to meet the assignment criteria.
+This included an animal object, moose object (unfinished), wolf object (unfinished) and an object for the environment of the isle (also unfinished).
+
+\subsection*{Environment}
+
+\subsubsection*{Ticks}
+
+\subsubsection*{Moose}
+The Moose object is created to live a simple life, so to speak. Aside from the fields and members inherited from the animal object, it's methods consists of just two members: One enabling reproduction and one handling the update of the reproduction and thereby the potential birth of a calf.
+
+\subsubsection*{Wolwes}
+The wolf object also inherits all fields and members of the animal object. The wolf, as the Moose, can reproduce and give birth to a cub in order to increase the population of wolfs on the island. Moreover the wolf can eat a moose populating a nearby position in the environment. 
+
+
+
+
+
+
+
+\subsection*{Program description}
+
+\begin{figure}
+\centering
+\begin{tikzpicture} [node distance = 1.5 cm, auto]
+		\node [cloud] (start) {New environment is created};
+        \node [cloud, below of=start] (tick) {Tick};
+        \node [cloud, right of=tick, node distance = 5 cm]
+            (moose) {Moose};
+        \node [cloud, below of=moose, node distance = 3 cm]
+            (mlive) {Live};
+        \node [cloud, left of=mlive, node distance = 3 cm]
+            (eaten) {Eaten by wolf}; 
+        \node [cloud, below of=mlive, node distance = 3 cm]
+            (mgiveb) {Give birth};
+        \node [cloud, right of=mlive, node distance = 3 cm]
+            (movem) {New position}; 
+		\node [cloud, left of=tick, node distance = 5 cm]
+            (wolf) {Wolf};
+        \node [cloud, left of=wolf, node distance = 3 cm]
+            (die) {Die};
+        \node [cloud, below of=wolf, node distance = 3 cm]
+            (wlive) {Live};
+        \node [cloud, left of=wlive, node distance = 3 cm]
+            (eat) {Eats moose}; 
+        \node [cloud, below of=wlive, node distance = 3 cm]
+            (wgiveb) {Give birth};
+        \node [cloud, right of=wlive, node distance = 3 cm]
+            (movew) {New position}; 
+            
+        % Arrows
+        \path [line] (start) -- (tick);
+        \path [line] (tick) -- (wolf);
+        \path [line] (tick) -- (moose);
+        \path [line] (wolf) -- (die);
+        \path [line] (wolf) -- (wlive);
+        \path [line] (moose) -- (mlive);
+        \path [line] (mlive) -- (eaten);
+        \path [line] (mlive) -- (movem);
+        \path [line] (mlive) -- (mgiveb);
+        \path [line] (wlive) -- (eat);
+        \path [line] (wlive) -- (movew);
+        \path [line] (wlive) -- (wgiveb);
+
+
+\end{tikzpicture}
+\caption{Flow of Isle Royale environment}
+\label{fig:gameflow}
+\end{figure}
 
 \subsection*{Test (afprøvning)}
 
@@ -77,7 +160,5 @@ For hvert tick, skal en ulvs sult tjekkes, hvis sulten er nået 0, skal ulven d�
 \subsection*{Brugervejledning}
 
 \subsection*{Programtekst}
-\lstset{language=FSharp}
-\lstinputlisting{animalsSmall.fs}
 
 \end{document}
