@@ -138,10 +138,9 @@ situationen udfra, hvad der er i nabo koordinaterne.*)
 //rykker sig til elgens position
 
 (*anyMoose undersøger om der er en moose rundt om ulven.*)
-  let anyMoose (b:board) (w: wolf)=
-    let list = (checkNabour b w)
-      List.exists (fun ((_,_),x) -> x = mSymbol) list
-  list
+  let anyMoose (b:board) (w: wolf) (m: moose)=
+    let aMoose = List.find (fun ((_,_),x) -> x = mSymbol) (checkNabour b w)
+    aMoose
 
 
 
@@ -167,7 +166,7 @@ situationen udfra, hvad der er i nabo koordinaterne.*)
     let wUpdate = w.tick ()
     let someCub = wUpdate //der er en moose rundt om, spis den. Benyt checkNabour.
     let newpos = List.find (fun ((_,_),x) -> x = eSymbol) (checkNabour b w)
-    if anyMoose then
+    if someCub <> None then
       let cub = (Option.get someCub)
       cub.position <- Some (fst newpos) //position er kun koordinatorne
     else
@@ -226,5 +225,11 @@ situationen udfra, hvad der er i nabo koordinaterne.*)
       ret <- ret + "\n"
     ret
 
+
 let newMoose = moose (3)
 printfn "%A" (newMoose.reproduction)
+let isle = environment(10, 6, 5, 3, 5, 6, false)
+//printfn "%A" (anyMoose _board newWolf newMoose)
+printfn "%A" isle // The inital board
+isle.tick ()
+printfn "%A" (isle.checkNabour (_board) (w))
