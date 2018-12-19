@@ -124,6 +124,46 @@ type environment (boardWidth : int, NMooses : int, mooseRepLen : int, NWolves : 
   do for w in _board.wolves do
        w.position <- Some (anyEmptyField _board)
 
+<<<<<<< HEAD
+=======
+let updateMoose (b: _board) (m: moose) =
+  if m.giveBirth () = Some then
+    
+  // indsæt baby på en plads rundt om.
+  // update liste med en ny moose.
+  else
+  // flyt position et sted, hvor der er plads rundt om.
+
+let updateWolf (w: wolf) =
+  if //der er en ulv rundt om, spis den.
+  elif m.giveBirth () = Some
+  // indsæt baby på en plads rundt om.
+  else
+  w.hunger () = None
+  // en ulv må der
+  // den skal undersøge om den skal have en baby, spise en moose, eller dø.
+
+
+let rec processLists (mList: moose List), (wList : wolf List) =
+  let handleMoose m =
+    (let calf, msg) = updateMoose _board m
+  let handleWolf w =
+    let (cub, msg) = updateWolf _ board
+  match (mList, wList) with
+  | ([], []) -> ()
+  | ([], w :: wList) -> handleWolf w
+                        processLists ([], wList)
+  | (m :: mList, []) -> handleMoose m
+                        processLists (mList, [])
+  | (m :: mList, w :: wList) -> if rnd.Next (2) = 1 then
+                                handleMoose m
+                                processLists (mList, w::wList)
+                                else
+                                handleWolf w
+                                processLists (m::mList, wList)
+
+
+>>>>>>> 1949f165c69e8e0dd8c03ed8aa51e85d609744e4
 // bredden og højden
   member this.size = boardWidth*boardWidth
   member this.count = _board.moose.Length + _board.wolves.Length
