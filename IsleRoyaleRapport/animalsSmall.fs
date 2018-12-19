@@ -107,36 +107,22 @@ type environment (boardWidth : int, NMooses : int, mooseRepLen : int, NWolves : 
       j <- rnd.Next b.width
     (i,j)
 
+//
+  let checkNabour (b: board) (a: animal): position = //ba er board array'et som sager _board som input
+    let arr = draw b
+    let NabourCord = [|(-1, -1); (0, -1); (1, -1); (1, 0); (1, 1); (0, 1); (-1, 1); (-1, 0)|]
+    let mutable nabour = (0, 0)
+    for k = 0 to (NabourCord.Length) do
+      nabour <- a + (NabourCord.[k]) //returner en liste med tupler, der har informationer om naboerne, dvs. symbolerne på pladserne. Lav derefter en funktion, der håndtere situationen udfra, hvad der er i nabo koordinaterne.
+      //while arr[i,j] <> eSymbol do
+        //[(i,j)] <- NabourCord.[k + 1]
+    (i,j)
+
   // populate the board with animals placed at random. Bruger anyEmptyFiels til at finde et frit koordinat.
   do for m in _board.moose do
        m.position <- Some (anyEmptyField _board)
   do for w in _board.wolves do
        w.position <- Some (anyEmptyField _board)
-
-let updateMoose m = m
-
-let updateWolf w = w
-
-let rec processLists (mList: moose List), (wList : wolf List) =
-  let handleMoose m =
-    (let calf, msg) = updateMoose _board m
-
-  let handleWolf w =
-    let (cub, msg) = updateWolf _ board
-
-  match (mList, wList) with
-  | ([], []) -> ()
-  | ([], w :: wList) -> handleWolf w
-                        processLists ([], wList)
-  | (m :: mList, []) -> handleMoose m
-                        processLists (mList, [])
-  | (m :: mList, w :: wList) -> if rnd.Next (2) = 1 then
-                                handleMoose m
-                                processLists (mList, w::wList)
-                                else
-                                handleWolf w
-                                processLists (m::mList, wList)
-
 
 // bredden og højden
   member this.size = boardWidth*boardWidth
