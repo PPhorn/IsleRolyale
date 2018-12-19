@@ -138,11 +138,10 @@ situationen udfra, hvad der er i nabo koordinaterne.*)
 //rykker sig til elgens position
 
 (*anyMoose undersøger om der er en moose rundt om ulven.*)
-  let anyMoose (b:board) (w: wolf) : bool =
-    if (List.exists (fun ((_,_),x) -> x = mSymbol) (checkNabour b w)) then
-    True
-    else
-    False
+  let anyMoose (b:board) (w: wolf)=
+    let list = (checkNabour b w)
+      List.exists (fun ((_,_),x) -> x = mSymbol) list
+  list
 
 
 
