@@ -133,27 +133,28 @@ situationen udfra, hvad der er i nabo koordinaterne.*)
     else
       m.position <- Some (fst newpos) //moose flytter position
 
-// (* eatMoose håndterer at en ulv spiser en elg, hvis den kan, fjerner elgen og
-//rykker sig til elgens position
-
-
 (* updateWolf undersøger om den kan spise en moose, om der er hvalp, eller om
 den skal flytte position. *)
   let updateWolf (b:board) (w: wolf) =
     let someCub = w.tick ()
+    let anyEmptyPos = // undersøger om der er et tomt felt i nabofelt
+      (List.exists (fun ((_,_),x) -> x = eSymbol) list)
     let list = (checkNabour b w)
-    let newpos = // finder tom position i nabofelt
-      List.find (fun ((_,_),x) -> x = eSymbol) list
     let anyMoose = // undersøger om der er mooses i nabofelt
-      List.exists (fun ((_,_),x) -> x = mSymbol) list
+      (List.exists (fun ((_,_),x) -> x = mSymbol) list)
     if anyMoose then
       let moosePos = // finder moosens nabofelt, så den kan spises
-        List.find (fun ((_,_),x) -> x = mSymbol) list
-      m.position <- None //Moosen dør
+        (List.find (fun ((_,_),x) -> x = mSymbol) list)
       let moveToMoose = (Option.get w)
       moveToMoose.position <- Some (fst moosePos) //Ulven rykker hen på moosensplads
-    elif
-      let cub = (Option.get someCub) // Fjerner option fra wolf/cab
+      for m in _board.moose do
+        if m.position = moosePos then
+          m.position <- None //Moosen dør
+      w.resetHunger () // Opdaterer ulvens sultparameter
+    elif anyEmptyPos then
+      let newpos =
+        (List.find (fun ((_,_),x) -> x = eSymbol) list) // finder førtse tomme position i nabofelt
+      let cub = (Option.get someCub) // Fjerner option fra wolf/cb
       cub.position <- Some (fst newpos) //position er kun koordinatorne
     else
       w.position <- Some (fst newpos) //moose flytter position
