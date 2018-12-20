@@ -161,7 +161,7 @@ den skal flytte position. *)
       if someCub <> None then
         let cub = (Option.get someCub) // Fjerner option fra wolf/cb
         cub.position <- Some (fst newpos) //position er kun koordinatorne
-        _board.wolves <- cub :: _board.wolves        
+        _board.wolves <- cub :: _board.wolves
     elif (List.exists (fun ((_,_),x) -> x = eSymbol) list) then
         let newpos =
           (List.find (fun ((_,_),x) -> x = eSymbol) list)
@@ -172,12 +172,14 @@ den skal flytte position. *)
 
 (*processLists kalder uodateMoose og updateWolf og tilføjer eventuelle afkom til
  listerne.*)
-  let rec processLists (mList: moose List), (wList : wolf List) =
+  let rec processLists (mList: moose List, wList : wolf List) =
     let handleMoose m =
       (updateMoose _board m)
-
+      _board.moose <- (List.filter (fun m -> m.position <> None) _board.moose)
     let handleWolf w =
       (updateWolf _board w)
+      _board.wolves <- (List.filter (fun w -> w.position <> None) _board.wolves)
+      printfn "%A" _board.wolves
 //Undersøg om w skal dø af sult og slet en ulv fra listen via filter, der giver ny liste.
     match (mList, wList) with
     | ([], []) -> ()
@@ -186,11 +188,11 @@ den skal flytte position. *)
     | (m :: mList, []) -> handleMoose m
                           processLists (mList, [])
     | (m :: mList, w :: wList) -> if rnd.Next (2) = 1 then
-                                  handleMoose m
-                                  processLists (mList, w::wList)
+                                    handleMoose m
+                                    processLists (mList, w::wList)
                                   else
-                                  handleWolf w
-                                  processLists (m::mList, wList)
+                                    handleWolf w
+                                    processLists (m::mList, wList)
 
 // populate the board with animals placed at random. Bruger anyEmptyFiels til at finde et frit koordinat.
   do for m in _board.moose do
@@ -203,7 +205,7 @@ den skal flytte position. *)
   member this.count = _board.moose.Length + _board.wolves.Length
   member this.board = _board
   member this.tick () =
-    () // Intentionally left blank. Insert code that process animals here.
+    processLists (_board.moose, _board.wolves) // Intentionally left blank. Insert code that process animals here.
   override this.ToString () =
     let arr = draw _board
     let mutable ret = "  "
