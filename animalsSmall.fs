@@ -85,8 +85,8 @@ type board =
 type environment (boardWidth : int, NMooses : int, mooseRepLen : int, NWolves : int, wolvesRepLen : int, wolvesHungLen : int, verbose : bool) =
   let _board : board = {
     width = boardWidth;
-    moose = List.init NMooses (fun i -> moose(mooseRepLen));
-    wolves = List.init NWolves (fun i -> wolf(wolvesRepLen, wolvesHungLen));
+    moose = List.init 2 (fun i -> moose(mooseRepLen));
+    wolves = List.init 3 (fun i -> wolf(wolvesRepLen, wolvesHungLen));
   }
 
   /// Project the list representation of the board into a 2d array.
@@ -113,12 +113,16 @@ symbolerne på pladserne. Lav derefter en funktion, der håndtere
 situationen udfra, hvad der er i nabo koordinaterne.*)
   let checkNabour (b: board) (a: animal) =
     let arr = draw b
-    let NabourCord = [(-1, -1); (0, -1); (1, -1); (1, 0); (1, 1); (0, 1); (-1, 1); (-1, 0)]
+    let NC =
+      [(-1, -1); (0, -1); (1, -1); (1, 0); (1, 1); (0, 1); (-1, 1); (-1, 0)]
     let Neighbour = List.map (fun (x,y) ->
-      (fst (Option.get a.position) + x, snd (Option.get a.position) + y)) NabourCord
+      (fst (Option.get a.position) + x, snd (Option.get a.position) + y)) NC
     let mutable nabour = List.empty<neighbour>
-    for k = 0 to (Neighbour.Length) do
-      nabour <- (Neighbour.[k], arr.[fst Neighbour.[k], snd Neighbour.[k]]) :: nabour
+    for k = 0 to (Neighbour.Length - 1) do
+      let nx = (fst Neighbour.[k])
+      let ny = (snd Neighbour.[k])
+      if nx > 0 && nx < _board.width && ny > 0 && ny < _board.width then
+        nabour <- (Neighbour.[k], arr.[nx, ny]) :: nabour
     nabour
 
 (* updateMoose undersøger om moose skal have en kalv, eller om den skal skifte
@@ -173,12 +177,13 @@ den skal flytte position. *)
 (*processLists kalder uodateMoose og updateWolf og tilføjer eventuelle afkom til
  listerne.*)
   let rec processLists (mList: moose List, wList : wolf List) =
+    _board.moose <- (List.filter (fun m -> m.position <> None) _board.moose)
+    _board.wolves <- (List.filter (fun w -> w.position <> None) _board.wolves)
     let handleMoose m =
       (updateMoose _board m)
-      _board.moose <- (List.filter (fun m -> m.position <> None) _board.moose)
+      printfn "%A" _board.moose
     let handleWolf w =
       (updateWolf _board w)
-      _board.wolves <- (List.filter (fun w -> w.position <> None) _board.wolves)
       printfn "%A" _board.wolves
 //Undersøg om w skal dø af sult og slet en ulv fra listen via filter, der giver ny liste.
     match (mList, wList) with
