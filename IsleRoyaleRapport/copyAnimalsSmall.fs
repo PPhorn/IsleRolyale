@@ -113,13 +113,23 @@ symbolerne på pladserne. Lav derefter en funktion, der håndtere
 situationen udfra, hvad der er i nabo koordinaterne.*)
   let checkNabour (b: board) (a: animal) =
     let arr = draw b
-    let NabourCord = [(-1, -1); (0, -1); (1, -1); (1, 0); (1, 1); (0, 1); (-1, 1); (-1, 0)]
+    let NC =
+      [(-1, -1); (0, -1); (1, -1); (1, 0); (1, 1); (0, 1); (-1, 1); (-1, 0)]
     let Neighbour = List.map (fun (x,y) ->
-      (fst (Option.get a.position) + x, snd (Option.get a.position) + y)) NabourCord
+      (fst (Option.get a.position) + x, snd (Option.get a.position) + y)) NC
+    printfn "Hej hej: %A" Neighbour
     let mutable nabour = List.empty<neighbour>
-    for k = 0 to (Neighbour.Length) do
-      nabour <- (Neighbour.[k], arr.[fst Neighbour.[k], snd Neighbour.[k]]) :: nabour
+    printfn "Hej hov: %A" nabour
+    for k = 0 to (Neighbour.Length - 1) do
+      let nx = (fst Neighbour.[k])
+      let ny = (snd Neighbour.[k])
+      if nx > 0 && nx < _board.width && ny > 0 && ny < _board.width then
+        nabour <- (Neighbour.[k], arr.[nx, ny]) :: nabour
+      printfn "Nabour: %A" nabour
+      printfn "nx: %A" nx
+      printfn "ny: %A" ny
     nabour
+
 
 (* updateMoose undersøger om moose skal have en kalv, eller om den skal skifte
  position. Indsæt baby på en plads rundt om via checkNabour.*)
@@ -198,13 +208,40 @@ den skal flytte position. *)
   do for w in _board.wolves do
        w.position <- Some (anyEmptyField _board)
 
+
 // bredden og højden
   member this.size = boardWidth*boardWidth
   member this.count = _board.moose.Length + _board.wolves.Length
   member this.board = _board
   member this.tick () =
     () // Intentionally left blank. Insert code that process animals here.
+// test members of functions in scope of environment class
   member this.testBoard = _board
+  member this.testMooseNabour =
+    let moose = _board.moose.[1]
+    checkNabour _board moose
+  member this.testWolfNabour =
+    let wolf = _board.wolves.[1]
+    checkNabour _board wolf
+  member this.testUpdateMoose =
+    let moose = _board.moose.[1]
+    printfn "1.Position and reproduction value of random moose from isleRoyale:"
+    printfn "- Position: %A" moose.position
+    printfn "- Reproduction value: %A" moose.reproduction
+    printfn "2.updateMoose run - function return: %A" (updateMoose _board moose)
+    printfn "3.Position and reproduction leves of same moose after 1 updateMoose:"
+    printfn "- Position: %A" moose.position
+    printfn "- Reproduction value: %A" moose.reproduction
+
+  member this.testUpdateWolf =
+    let wolf = _board.wolves.[1]
+    printfn "1.Position and reproduction value of random wolf from isleRoyale:"
+    printfn "- Position: %A" wolf.position
+    printfn "- Reproduction value: %A" wolf.reproduction
+    printfn "2.updateMoose run - function return: %A" (updateWolf _board wolf)
+    printfn "3.Position and reproduction leves of same wolf after 1 updateMoose:"
+    printfn "- Position: %A" wolf.position
+    printfn "- Reproduction value: %A" wolf.reproduction
 
   override this.ToString () =
     let arr = draw _board
