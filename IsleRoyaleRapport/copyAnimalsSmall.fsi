@@ -5,6 +5,8 @@ type symbol = char
 /// A position on a board
 type position = int * int
 /// Base class for all animals. An animal has a position, age and a time to reproduce.
+type neighbour = position * symbol
+/// A neighbour type consisting of a position and animal symbol
 type animal =
   class
     /// <summary>Create a new animal represented with symbol symb and which reproduces every repLen ticks.</summary>
@@ -91,4 +93,10 @@ type environment =
     member size : int
     /// Perform a tick by performing all animal's ticks in random order. Animals perform the following actions: Calves and cubs are added if there is room in a neighbouring position. Wolves eat a random Moose in a neighbouring position. If animals do not give birth, eat or are eaten, then they move to an available neighbouring position.
     member tick : unit -> unit
+    /// Test members below
+    member testBoard : board
+    member testMooseNabour : neighbour list
+    member testWolfNabour : neighbour list
+    member testUpdateMoose : unit
+    member testUpdateWolf : unit
   end
