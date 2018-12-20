@@ -154,9 +154,10 @@ den skal flytte position. *)
         if m.position = Some (fst moosePos) then
           m.position <- None //Moosen dør
       w.resetHunger () // Opdaterer ulvens sultparameter
+      //undersøger om der er et ledigt felt i nabofelt
     elif (List.exists (fun ((_,_),x) -> x = eSymbol) list) then
-      let newpos =
-        (List.find (fun ((_,_),x) -> x = eSymbol) list) // finder førtse tomme position i nabofelt
+      let newpos = // finder førtse tomme position i nabofelt
+        (List.find (fun ((_,_),x) -> x = eSymbol) list)
       if someCub <> None then
         let cub = (Option.get someCub) // Fjerner option fra wolf/cb
         cub.position <- Some (fst newpos) //position er kun koordinatorne
@@ -169,18 +170,20 @@ den skal flytte position. *)
       if someCub <> None then
         w.resetReproduction ()
 
-(*processLists kalder uodateMoose og updateWolf og tilføjer eventuelle afkom til
- listerne.*)
+(*processLists kalder uodateMoose og updateWolf og fjerner eventuelle døde dyr
+fra listerne.*)
   let rec processLists (mList: moose List, wList : wolf List) =
-    _board.moose <- (List.filter (fun m -> m.position <> None) _board.moose)
-    _board.wolves <- (List.filter (fun w -> w.position <> None) _board.wolves)
     let handleMoose m =
+    //fjerner døde dyr fra mooseboard
+      _board.moose <- (List.filter (fun m -> m.position <> None) _board.moose)
       (updateMoose _board m)
       printfn "%A" _board.moose
     let handleWolf w =
+    //fjerner døde dyr fra wolfboard
+      _board.wolves <- (List.filter (fun w -> w.position <> None) _board.wolves)
       (updateWolf _board w)
       printfn "%A" _board.wolves
-//Undersøg om w skal dø af sult og slet en ulv fra listen via filter, der giver ny liste.
+// matchet vælger et tilfældigt dyr fra listerne og processeserer det.
     match (mList, wList) with
     | ([], []) -> ()
     | ([], w :: wList) -> handleWolf w
