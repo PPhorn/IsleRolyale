@@ -65,14 +65,11 @@ type wolf (repLen : int, hungLen : int) =
     else
       None
 
+// hvis ulven ikke dør, undersøger vi om den skal føder
   member this.tick () : wolf option =
-    this.updateHunger() // hvis ulven ikke dør, undersøger vi om den skal føder
     match this.position with
-    | Some position -> (this.giveBirth ())
+    | Some position -> (this.updateHunger (); this.giveBirth ())
     | None -> None
-
-    // Intentionally left blank. Insert code that updates the wolf's age and optionally an offspring.
-// updateHunger skal kaldes for hvert tick.
 
 
 /// A board is a chess-like board implicitly representedy by its width and coordinates of the animals.
@@ -86,7 +83,7 @@ type environment (boardWidth : int, NMooses : int, mooseRepLen : int, NWolves : 
   let _board : board = {
     width = boardWidth;
     moose = List.init 2 (fun i -> moose(mooseRepLen));
-    wolves = List.init 3 (fun i -> wolf(wolvesRepLen, wolvesHungLen));
+    wolves = List.init 6 (fun i -> wolf(wolvesRepLen, wolvesHungLen));
   }
 
   /// Project the list representation of the board into a 2d array.
@@ -141,8 +138,6 @@ situationen udfra, hvad der er i nabo koordinaterne.*)
     else
       if someCalf <> None then
         m.resetReproduction()
-
-
 
 (* updateWolf undersøger om den kan spise en moose, om der er hvalp, eller om
 den skal flytte position. *)
@@ -223,6 +218,3 @@ den skal flytte position. *)
         ret <- ret + string arr.[i,j] + " "
       ret <- ret + "\n"
     ret
-
-let newMoose = moose (3)
-printfn "%A" (newMoose.reproduction)
