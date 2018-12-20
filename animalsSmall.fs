@@ -131,13 +131,13 @@ situationen udfra, hvad der er i nabo koordinaterne.*)
       if someCalf <> None then
         let calf = (Option.get someCalf) //Fjerner option fra moose/calf
         calf.position <- Some (fst newpos) //position er kun koordinatorne
+        _board.moose <- calf :: _board.moose // Indsætter en calf på mooselisten
       else
         m.position <- Some (fst newpos) //moose flytter position
-      someCalf
     else
       if someCalf <> None then
         m.resetReproduction()
-      someCalf
+
 
 
 (* updateWolf undersøger om den kan spise en moose, om der er hvalp, eller om
@@ -155,36 +155,30 @@ den skal flytte position. *)
         if m.position = Some (fst moosePos) then
           m.position <- None //Moosen dør
       w.resetHunger () // Opdaterer ulvens sultparameter
-      someCub
     elif (List.exists (fun ((_,_),x) -> x = eSymbol) list) then
       let newpos =
         (List.find (fun ((_,_),x) -> x = eSymbol) list) // finder førtse tomme position i nabofelt
       if someCub <> None then
         let cub = (Option.get someCub) // Fjerner option fra wolf/cb
         cub.position <- Some (fst newpos) //position er kun koordinatorne
-      someCub
+        _board.wolves <- cub :: _board.wolves        
     elif (List.exists (fun ((_,_),x) -> x = eSymbol) list) then
         let newpos =
           (List.find (fun ((_,_),x) -> x = eSymbol) list)
         w.position <- Some (fst newpos) //moose flytter position
-      someCub
     else
       if someCub <> None then
         w.resetReproduction ()
-      someCub
 
 (*processLists kalder uodateMoose og updateWolf og tilføjer eventuelle afkom til
  listerne.*)
   let rec processLists (mList: moose List), (wList : wolf List) =
     let handleMoose m =
-      let someCalf = (updateMoose _board m)
-      if someCalf <> None then // hvis some calf, så indsæt i _board.moose
-        _board.moose <- (Option.get (someCalf)) :: _board.moose
+      (updateMoose _board m)
+
     let handleWolf w =
-      let cub = (updateWolf _board w)
-      if cub <> None then
-        _board.wolf <- (Option.get cub) :: _board.wolf
-//Undersøg om w skal dø af sult og slet en ulv fra listen.
+      (updateWolf _board w)
+//Undersøg om w skal dø af sult og slet en ulv fra listen via filter, der giver ny liste.
     match (mList, wList) with
     | ([], []) -> ()
     | ([], w :: wList) -> handleWolf w
