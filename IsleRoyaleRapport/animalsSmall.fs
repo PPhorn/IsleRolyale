@@ -161,7 +161,7 @@ den skal flytte position. *)
       if someCub <> None then
         let cub = (Option.get someCub) // Fjerner option fra wolf/cb
         cub.position <- Some (fst newpos) //position er kun koordinatorne
-        _board.wolves <- cub :: _board.wolves        
+        _board.wolves <- cub :: _board.wolves
     elif (List.exists (fun ((_,_),x) -> x = eSymbol) list) then
         let newpos =
           (List.find (fun ((_,_),x) -> x = eSymbol) list)
@@ -172,25 +172,25 @@ den skal flytte position. *)
 
 (*processLists kalder uodateMoose og updateWolf og tilføjer eventuelle afkom til
  listerne.*)
-  let rec processLists (mList: moose List), (wList : wolf List) =
-    let handleMoose m =
-      (updateMoose _board m)
-
-    let handleWolf w =
-      (updateWolf _board w)
-//Undersøg om w skal dø af sult og slet en ulv fra listen via filter, der giver ny liste.
-    match (mList, wList) with
-    | ([], []) -> ()
-    | ([], w :: wList) -> handleWolf w
-                          processLists ([], wList)
-    | (m :: mList, []) -> handleMoose m
-                          processLists (mList, [])
-    | (m :: mList, w :: wList) -> if rnd.Next (2) = 1 then
-                                  handleMoose m
-                                  processLists (mList, w::wList)
-                                  else
-                                  handleWolf w
-                                  processLists (m::mList, wList)
+//   let rec processLists (mList: moose List), (wList : wolf List) =
+//     let handleMoose m =
+//       (updateMoose _board m)
+//
+//     let handleWolf w =
+//       (updateWolf _board w)
+// //Undersøg om w skal dø af sult og slet en ulv fra listen via filter, der giver ny liste.
+//     match (mList, wList) with
+//     | ([], []) -> ()
+//     | ([], w :: wList) -> handleWolf w
+//                           processLists ([], wList)
+//     | (m :: mList, []) -> handleMoose m
+//                           processLists (mList, [])
+//     | (m :: mList, w :: wList) -> if rnd.Next (2) = 1 then
+//                                   handleMoose m
+//                                   processLists (mList, w::wList)
+//                                   else
+//                                   handleWolf w
+//                                   processLists (m::mList, wList)
 
 // populate the board with animals placed at random. Bruger anyEmptyFiels til at finde et frit koordinat.
   do for m in _board.moose do
@@ -216,6 +216,8 @@ den skal flytte position. *)
         ret <- ret + string arr.[i,j] + " "
       ret <- ret + "\n"
     ret
+
+  member this.testNabour (a: animal) = (checkNabour _board a)
 
 let newMoose = moose (3)
 printfn "%A" (newMoose.reproduction)
