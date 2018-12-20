@@ -204,6 +204,8 @@ den skal flytte position. *)
   member this.board = _board
   member this.tick () =
     () // Intentionally left blank. Insert code that process animals here.
+  member this.testBoard = _board
+
   override this.ToString () =
     let arr = draw _board
     let mutable ret = "  "
@@ -217,7 +219,17 @@ den skal flytte position. *)
       ret <- ret + "\n"
     ret
 
-  member this.testNabour (a: animal) = (checkNabour _board a)
 
-let newMoose = moose (3)
-printfn "%A" (newMoose.reproduction)
+
+//   member this.testNabour (a: animal)=
+//     match a with
+//     |moose -> checkNabour _board moose
+//     |wolf -> checkNabour _board wolf
+//
+// let isleRoyale = environment(10, 6, 5, 3, 5, 6, false)
+// let testMoose = moose (3)
+// printf "%A" (isleRoyale.testNabour testMoose)
+
+// //printfn "%A" (newMoose.reproduction)
+// let isleRoyale = environment(10, 6, 5, 3, 5, 6, false)
+// printf "%A" (isleRoyale.testNabour testMoose)
