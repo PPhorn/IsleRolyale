@@ -126,20 +126,23 @@ situationen udfra, hvad der er i nabo koordinaterne.*)
 (* updateMoose undersøger om moose skal have en kalv, eller om den skal skifte
  position. Indsæt baby på en plads rundt om via checkNabour.*)
   let updateMoose (b: board) (m: moose) =
-    let someCalf = m.tick () //skal ikke være option
-    let list = (checkNabour b m)
-    if (List.exists (fun ((_,_),x) -> x = eSymbol) list) then
-      let newpos = List.find (fun ((_,_),x) -> x = eSymbol) (checkNabour b m)
-      if someCalf <> None then
-        let calf = (Option.get someCalf) //Fjerner option fra moose/calf
-        calf.position <- Some (fst newpos) //position er kun koordinatorne
-        _board.moose <- calf :: _board.moose // Indsætter en calf på mooselisten
-        m.resetReproduction()
-      else
-        m.position <- Some (fst newpos) //moose flytter position
+    if m.position = None then
+      ()
     else
-      if someCalf <> None then
-        m.resetReproduction()
+      let someCalf = m.tick () //skal ikke være option
+      let list = (checkNabour b m)
+      if (List.exists (fun ((_,_),x) -> x = eSymbol) list) then
+        let newpos = List.find (fun ((_,_),x) -> x = eSymbol) (checkNabour b m)
+        if someCalf <> None then
+          let calf = (Option.get someCalf) //Fjerner option fra moose/calf
+          calf.position <- Some (fst newpos) //position er kun koordinatorne
+          _board.moose <- calf :: _board.moose // Indsætter en calf på mooselisten
+          m.resetReproduction()
+        else
+          m.position <- Some (fst newpos) //moose flytter position
+      else
+        if someCalf <> None then
+          m.resetReproduction()
 
 
 (* updateWolf undersøger om den kan spise en moose, om der er hvalp, eller om
@@ -179,15 +182,20 @@ den skal flytte position. *)
 
 (*processLists kalder uodateMoose og updateWolf og fjerner eventuelle døde dyr
 fra listerne.*)
-  let rec processLists (mList: moose List, wList : wolf List) =
+  let rec processLists (mosList: moose List, wofList : wolf List) =
+    let mutable mList = mosList
+    let mutable wList = wofList
+
     let handleMoose m =
     //fjerner døde dyr fra mooseboard
       _board.moose <- List.filter (fun m -> m.position <> None) _board.moose
+      mList <- List.filter (fun m -> m.position <> None) mList
       (updateMoose _board m)
       printfn "%A" _board.moose
     let handleWolf w =
     //fjerner døde dyr fra wolfboard
       _board.wolves <- List.filter (fun w -> w.position <> None) _board.wolves
+      wList <- List.filter (fun m -> m.position <> None) wList
       (updateWolf _board w)
       printfn "%A" _board.wolves
 // matchet vælger et tilfældigt dyr fra listerne og processeserer det.
