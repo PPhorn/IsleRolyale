@@ -80,11 +80,11 @@ type board =
    mutable wolves : wolf list;}
 
 /// An environment is a chess-like board with all animals and implenting all rules.
-type environment (boardWidth : int, NMooses : int, mooseRepLen : int, NWolves : int, wolvesRepLen : int, wolvesHungLen : int) =
+type environment (boardWidth : int, NMooses : int, mooseRepLen : int, NWolves : int, wolvesRepLen : int, wolvesHungLen : int, verbose : bool) =
   let _board : board = {
     width = boardWidth;
-    moose = List.init 2 (fun i -> moose(mooseRepLen));
-    wolves = List.init 6 (fun i -> wolf(wolvesRepLen, wolvesHungLen));
+    moose = List.init NMooses (fun i -> moose(mooseRepLen));
+    wolves = List.init NWolves (fun i -> wolf(wolvesRepLen, wolvesHungLen));
   }
 
   /// Project the list representation of the board into a 2d array.
@@ -127,10 +127,10 @@ situationen udfra, hvad der er i nabo koordinaterne.*)
 (* updateMoose undersøger om moose skal have en kalv, eller om den skal skifte
  position. Indsæt baby på en plads rundt om via checkNabour.*)
   let updateMoose (b: board) (m: moose) =
+    let someCalf = m.tick ()
     if m.position = None then
       ()
     else
-      let someCalf = m.tick () //skal ikke være option
       let list = (checkNabour b m)
       if (List.exists (fun ((_,_),x) -> x = eSymbol) list) then
         let newpos = List.find (fun ((_,_),x) -> x = eSymbol) (checkNabour b m)
@@ -149,10 +149,10 @@ situationen udfra, hvad der er i nabo koordinaterne.*)
 (* updateWolf undersøger om den kan spise en moose, om der er hvalp, eller om
 den skal flytte position. *)
   let updateWolf (b:board) (w: wolf) =
+    let someCub = w.tick ()
     if w.position = None then
       ()
     else
-      let someCub = w.tick ()
     // let cub = (Option.get someCub) // Fjerner option fra wolf/cub
       let list = (checkNabour b w)
       let anyMoose = // undersøger om der er mooses i nabofelt
