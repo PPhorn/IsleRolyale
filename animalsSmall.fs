@@ -1,3 +1,4 @@
+
 module animals
 
 type symbol = char
@@ -79,7 +80,7 @@ type board =
    mutable wolves : wolf list;}
 
 /// An environment is a chess-like board with all animals and implenting all rules.
-type environment (boardWidth : int, NMooses : int, mooseRepLen : int, NWolves : int, wolvesRepLen : int, wolvesHungLen : int, verbose : bool) =
+type environment (boardWidth : int, NMooses : int, mooseRepLen : int, NWolves : int, wolvesRepLen : int, wolvesHungLen : int) =
   let _board : board = {
     width = boardWidth;
     moose = List.init 2 (fun i -> moose(mooseRepLen));
