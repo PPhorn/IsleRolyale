@@ -241,7 +241,15 @@ fra listerne.*)
     printfn "- Position: %A" moose.position
     printfn "- Reproduction value: %A" moose.reproduction
     printfn "2.updateMoose run - function return: %A" (updateMoose _board moose)
-    printfn "3.Position and reproduction leves of same moose after 1 updateMoose:"
+    printfn "3.Position and reproduction level of same moose after 1 updateMoose:"
+    printfn "- Position: %A" moose.position
+    printfn "- Reproduction value: %A" moose.reproduction
+    (updateMoose _board moose)
+    printfn "4. Position and reproduction level of same moose after 2 updateMoose:"
+    printfn "- Position: %A" moose.position
+    printfn "- Reproduction value: %A" moose.reproduction
+    (updateMoose _board moose)
+    printfn "5. Position and reproduction level of same moose after 3 updateMoose:"
     printfn "- Position: %A" moose.position
     printfn "- Reproduction value: %A" moose.reproduction
 
@@ -250,12 +258,21 @@ fra listerne.*)
     printfn "1.Position and reproduction value of random wolf from isleRoyale:"
     printfn "- Position: %A" wolf.position
     printfn "- Reproduction value: %A" wolf.reproduction
-    printfn "2.updateMoose run - function return: %A" (updateWolf _board wolf)
-    printfn "3.Position and reproduction leves of same wolf after 1 updateMoose:"
+    printfn "2.updateWolf run - function return: %A" (updateWolf _board wolf)
+    printfn "3.Position and reproduction leves of same wolf after 1 updateWolf:"
+    printfn "- Position: %A" wolf.position
+    printfn "- Reproduction value: %A" wolf.reproduction
+    (updateWolf _board wolf)
+    printfn "4. Position and reproduction level of same wolf after 2 updateWolf:"
+    printfn "- Position: %A" wolf.position
+    printfn "- Reproduction value: %A" wolf.reproduction
+    (updateWolf _board wolf)
+    printfn "5. Position and reproduction level of same wolf after 3 updateWolf:"
     printfn "- Position: %A" wolf.position
     printfn "- Reproduction value: %A" wolf.reproduction
 
-
+  member this.testProcessLists =
+    processLists (_board.moose, _board.wolves)
 
   override this.ToString () =
     let arr = draw _board
