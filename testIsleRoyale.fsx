@@ -19,3 +19,7 @@ printfn "%A" updateMooseTest
 printfn "\nTest of updatewolf function in environment scope:"
 let updateWolfTest = isleRoyale.testUpdateWolf
 printfn "%A" updateWolfTest
+
+printfn "\nTest of processLists function in environment scope:"
+let runProcessLists = isleRoyale.testProcessLists
+printfn "%A" runProcessLists

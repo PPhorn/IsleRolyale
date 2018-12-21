@@ -98,4 +98,5 @@ type environment =
     member testWolfNabour : neighbour list
     member testUpdateMoose : unit
     member testUpdateWolf : unit
+    member testProcessLists : unit
   end
