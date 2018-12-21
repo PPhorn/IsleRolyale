@@ -216,6 +216,36 @@ fra listerne.*)
   member this.board = _board
   member this.tick () =
     processLists (_board.moose, _board.wolves) // Intentionally left blank. Insert code that process animals here.
+// test members of functions in scope of environment class
+  member this.testBoard = _board
+  member this.testMooseNabour =
+    let moose = _board.moose.[1]
+    checkNabour _board moose
+  member this.testWolfNabour =
+    let wolf = _board.wolves.[1]
+    checkNabour _board wolf
+  member this.testUpdateMoose =
+    let moose = _board.moose.[1]
+    printfn "1.Position and reproduction value of random moose from isleRoyale:"
+    printfn "- Position: %A" moose.position
+    printfn "- Reproduction value: %A" moose.reproduction
+    printfn "2.updateMoose run - function return: %A" (updateMoose _board moose)
+    printfn "3.Position and reproduction leves of same moose after 1 updateMoose:"
+    printfn "- Position: %A" moose.position
+    printfn "- Reproduction value: %A" moose.reproduction
+
+  member this.testUpdateWolf =
+    let wolf = _board.wolves.[1]
+    printfn "1.Position and reproduction value of random wolf from isleRoyale:"
+    printfn "- Position: %A" wolf.position
+    printfn "- Reproduction value: %A" wolf.reproduction
+    printfn "2.updateMoose run - function return: %A" (updateWolf _board wolf)
+    printfn "3.Position and reproduction leves of same wolf after 1 updateMoose:"
+    printfn "- Position: %A" wolf.position
+    printfn "- Reproduction value: %A" wolf.reproduction
+
+
+
   override this.ToString () =
     let arr = draw _board
     let mutable ret = "  "
