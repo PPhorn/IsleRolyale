@@ -65,14 +65,11 @@ type wolf (repLen : int, hungLen : int) =
     else
       None
 
+// hvis ulven ikke dør, undersøger vi om den skal føder
   member this.tick () : wolf option =
-    this.updateHunger() // hvis ulven ikke dør, undersøger vi om den skal føder
     match this.position with
-    | Some position -> (this.giveBirth ())
+    | Some position -> (this.updateHunger (); this.giveBirth ())
     | None -> None
-
-    // Intentionally left blank. Insert code that updates the wolf's age and optionally an offspring.
-// updateHunger skal kaldes for hvert tick.
 
 
 /// A board is a chess-like board implicitly representedy by its width and coordinates of the animals.
@@ -85,8 +82,8 @@ type board =
 type environment (boardWidth : int, NMooses : int, mooseRepLen : int, NWolves : int, wolvesRepLen : int, wolvesHungLen : int, verbose : bool) =
   let _board : board = {
     width = boardWidth;
-    moose = List.init NMooses (fun i -> moose(mooseRepLen));
-    wolves = List.init NWolves (fun i -> wolf(wolvesRepLen, wolvesHungLen));
+    moose = List.init 2 (fun i -> moose(mooseRepLen));
+    wolves = List.init 6 (fun i -> wolf(wolvesRepLen, wolvesHungLen));
   }
 
   /// Project the list representation of the board into a 2d array.
@@ -117,17 +114,12 @@ situationen udfra, hvad der er i nabo koordinaterne.*)
       [(-1, -1); (0, -1); (1, -1); (1, 0); (1, 1); (0, 1); (-1, 1); (-1, 0)]
     let Neighbour = List.map (fun (x,y) ->
       (fst (Option.get a.position) + x, snd (Option.get a.position) + y)) NC
-    printfn "Hej hej: %A" Neighbour
     let mutable nabour = List.empty<neighbour>
-    printfn "Hej hov: %A" nabour
     for k = 0 to (Neighbour.Length - 1) do
       let nx = (fst Neighbour.[k])
       let ny = (snd Neighbour.[k])
       if nx > 0 && nx < _board.width && ny > 0 && ny < _board.width then
         nabour <- (Neighbour.[k], arr.[nx, ny]) :: nabour
-      printfn "Nabour: %A" nabour
-      printfn "nx: %A" nx
-      printfn "ny: %A" ny
     nabour
 
 
@@ -142,6 +134,7 @@ situationen udfra, hvad der er i nabo koordinaterne.*)
         let calf = (Option.get someCalf) //Fjerner option fra moose/calf
         calf.position <- Some (fst newpos) //position er kun koordinatorne
         _board.moose <- calf :: _board.moose // Indsætter en calf på mooselisten
+        m.resetReproduction()
       else
         m.position <- Some (fst newpos) //moose flytter position
     else
@@ -149,58 +142,67 @@ situationen udfra, hvad der er i nabo koordinaterne.*)
         m.resetReproduction()
 
 
-
 (* updateWolf undersøger om den kan spise en moose, om der er hvalp, eller om
 den skal flytte position. *)
   let updateWolf (b:board) (w: wolf) =
     let someCub = w.tick ()
+    // let cub = (Option.get someCub) // Fjerner option fra wolf/cub
     let list = (checkNabour b w)
     let anyMoose = // undersøger om der er mooses i nabofelt
       (List.exists (fun ((_,_),x) -> x = mSymbol) list)
     if anyMoose then
-      let moosePos = // finder moosens nabofelt, så den kan spises
+      let moosePos = // finder moosens position, så den kan spises
         (List.find (fun ((_,_),x) -> x = mSymbol) list)
       w.position <- Some (fst moosePos) //Ulven rykker hen på moosensplads
       for m in _board.moose do
         if m.position = Some (fst moosePos) then
           m.position <- None //Moosen dør
       w.resetHunger () // Opdaterer ulvens sultparameter
-    elif (List.exists (fun ((_,_),x) -> x = eSymbol) list) then
-      let newpos =
-        (List.find (fun ((_,_),x) -> x = eSymbol) list) // finder førtse tomme position i nabofelt
-      if someCub <> None then
-        let cub = (Option.get someCub) // Fjerner option fra wolf/cb
-        cub.position <- Some (fst newpos) //position er kun koordinatorne
-        _board.wolves <- cub :: _board.wolves
-    elif (List.exists (fun ((_,_),x) -> x = eSymbol) list) then
-        let newpos =
+      //undersøger om der er et ledigt felt i nabofelt
+    elif someCub <> None then
+      if (List.exists (fun ((_,_),x) -> x = eSymbol) list) then
+        let newpos = // finder førtse tomme position i nabofelt
           (List.find (fun ((_,_),x) -> x = eSymbol) list)
-        w.position <- Some (fst newpos) //moose flytter position
-    else
-      if someCub <> None then
+        let cub = (Option.get someCub) // Fjerner option fra wolf/cub
+        cub.position <- Some (fst newpos) //position er kun koordinatorne
+        _board.wolves <- cub :: _board.wolves // cub indsættes i wolveslisten
+        w.resetReproduction () // reproductionen resettes
+      else
+        (Option.get someCub).position <- None //cub dør, da der ikke er nogen tomme nabofelter
         w.resetReproduction ()
+    else
+      if (List.exists (fun ((_,_),x) -> x = eSymbol) list) then
+        let newpos = // finder første tomme position i nabofelt
+          (List.find (fun ((_,_),x) -> x = eSymbol) list)
+        w.position <- Some (fst newpos) //wolf flytter position
 
-(*processLists kalder uodateMoose og updateWolf og tilføjer eventuelle afkom til
- listerne.*)
-//   let rec processLists (mList: moose List), (wList : wolf List) =
-//     let handleMoose m =
-//       (updateMoose _board m)
-//
-//     let handleWolf w =
-//       (updateWolf _board w)
-// //Undersøg om w skal dø af sult og slet en ulv fra listen via filter, der giver ny liste.
-//     match (mList, wList) with
-//     | ([], []) -> ()
-//     | ([], w :: wList) -> handleWolf w
-//                           processLists ([], wList)
-//     | (m :: mList, []) -> handleMoose m
-//                           processLists (mList, [])
-//     | (m :: mList, w :: wList) -> if rnd.Next (2) = 1 then
-//                                   handleMoose m
-//                                   processLists (mList, w::wList)
-//                                   else
-//                                   handleWolf w
-//                                   processLists (m::mList, wList)
+
+(*processLists kalder uodateMoose og updateWolf og fjerner eventuelle døde dyr
+fra listerne.*)
+  let rec processLists (mList: moose List, wList : wolf List) =
+    let handleMoose m =
+    //fjerner døde dyr fra mooseboard
+      _board.moose <- List.filter (fun m -> m.position <> None) _board.moose
+      (updateMoose _board m)
+      printfn "%A" _board.moose
+    let handleWolf w =
+    //fjerner døde dyr fra wolfboard
+      _board.wolves <- List.filter (fun w -> w.position <> None) _board.wolves
+      (updateWolf _board w)
+      printfn "%A" _board.wolves
+// matchet vælger et tilfældigt dyr fra listerne og processeserer det.
+    match (mList, wList) with
+    | ([], []) -> ()
+    | ([], w :: wList) -> handleWolf w
+                          processLists ([], wList)
+    | (m :: mList, []) -> handleMoose m
+                          processLists (mList, [])
+    | (m :: mList, w :: wList) -> if rnd.Next (2) = 1 then
+                                    handleMoose m
+                                    processLists (mList, w::wList)
+                                  else
+                                    handleWolf w
+                                    processLists (m::mList, wList)
 
 // populate the board with animals placed at random. Bruger anyEmptyFiels til at finde et frit koordinat.
   do for m in _board.moose do
@@ -208,13 +210,12 @@ den skal flytte position. *)
   do for w in _board.wolves do
        w.position <- Some (anyEmptyField _board)
 
-
 // bredden og højden
   member this.size = boardWidth*boardWidth
   member this.count = _board.moose.Length + _board.wolves.Length
   member this.board = _board
   member this.tick () =
-    () // Intentionally left blank. Insert code that process animals here.
+    processLists (_board.moose, _board.wolves) // Intentionally left blank. Insert code that process animals here.
 // test members of functions in scope of environment class
   member this.testBoard = _board
   member this.testMooseNabour =
@@ -243,6 +244,8 @@ den skal flytte position. *)
     printfn "- Position: %A" wolf.position
     printfn "- Reproduction value: %A" wolf.reproduction
 
+
+
   override this.ToString () =
     let arr = draw _board
     let mutable ret = "  "
@@ -255,18 +258,3 @@ den skal flytte position. *)
         ret <- ret + string arr.[i,j] + " "
       ret <- ret + "\n"
     ret
-
-
-
-//   member this.testNabour (a: animal)=
-//     match a with
-//     |moose -> checkNabour _board moose
-//     |wolf -> checkNabour _board wolf
-//
-// let isleRoyale = environment(10, 6, 5, 3, 5, 6, false)
-// let testMoose = moose (3)
-// printf "%A" (isleRoyale.testNabour testMoose)
-
-// //printfn "%A" (newMoose.reproduction)
-// let isleRoyale = environment(10, 6, 5, 3, 5, 6, false)
-// printf "%A" (isleRoyale.testNabour testMoose)
