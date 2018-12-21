@@ -1,4 +1,4 @@
-let isleRoyale = animals.environment(10, 15, 5, 15, 5, 6, false)
+let isleRoyale = animals.environment(10, 15, 5, 15, 5, 6)
 
 printfn "\nTest of _board function in environment scope:"
 let boardTest = isleRoyale.testBoard
