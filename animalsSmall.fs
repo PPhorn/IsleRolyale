@@ -80,7 +80,7 @@ type board =
    mutable wolves : wolf list;}
 
 /// An environment is a chess-like board with all animals and implenting all rules.
-type environment (boardWidth : int, NMooses : int, mooseRepLen : int, NWolves : int, wolvesRepLen : int, wolvesHungLen : int, verbose : bool) =
+type environment (boardWidth : int, NMooses : int, mooseRepLen : int, NWolves : int, wolvesRepLen : int, wolvesHungLen : int) =
   let _board : board = {
     width = boardWidth;
     moose = List.init NMooses (fun i -> moose(mooseRepLen));
@@ -195,13 +195,11 @@ fra listerne.*)
       _board.moose <- List.filter (fun m -> m.position <> None) _board.moose
       mList <- List.filter (fun m -> m.position <> None) mList
       (updateMoose _board m)
-      printfn "%A" _board.moose
     let handleWolf w =
     //fjerner døde dyr fra wolfboard
       _board.wolves <- List.filter (fun w -> w.position <> None) _board.wolves
       wList <- List.filter (fun m -> m.position <> None) wList
       (updateWolf _board w)
-      printfn "%A" _board.wolves
 // matchet vælger et tilfældigt dyr fra listerne og processeserer det.
     match (mList, wList) with
     | ([], []) -> ()
@@ -224,7 +222,8 @@ fra listerne.*)
 
 // bredden og højden
   member this.size = boardWidth*boardWidth
-  member this.count = _board.moose.Length + _board.wolves.Length
+  member this.countMoose = _board.moose.Length
+  member this.countWolf = _board.wolves.Length
   member this.board = _board
   member this.tick () =
     processLists (_board.moose, _board.wolves) // Intentionally left blank. Insert code that process animals here.
