@@ -21,7 +21,7 @@
   xlabel=Ticks,
   ylabel=\textcolor{red}{Wolves}
 ]
-\addplot[mark=*,red] table [x=T, y=W, col sep=comma]{sim_a1.csv};
+\addplot[mark=*,red] table [x=T, y=W, col sep=comma]{sim_c3.csv};
 \end{axis}
 
 \begin{axis}[
@@ -29,11 +29,11 @@
   axis x line=none,
   ylabel=\textcolor{blue}{Moose}
 ]
-\addplot[mark=*,blue] table [x=T, y=M, col sep=comma]{sim_a1.csv};
+\addplot[mark=*,blue] table [x=T, y=M, col sep=comma]{sim_c3.csv};
 \end{axis}
 
 \end{tikzpicture}
-\caption{Evolution og Wolfes and Moose population in a single simulation}
+\caption{Input values: ticks: 40, boardw: 25, mooses: 5, moose rep-lenght: 6, wolves: 5, wolf rep-lenght: 3, wolf hunger lenght: 4}
 \end{figure}
 
 \end{document}
