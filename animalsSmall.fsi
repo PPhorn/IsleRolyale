@@ -95,8 +95,8 @@ type environment =
     member tick : unit -> unit
     /// Test members below
     member testBoard : board
-    member testMooseNabour : neighbour list
-    member testWolfNabour : neighbour list
+    member testMooseNabour : unit
+    member testWolfNabour : unit
     member testUpdateMoose : unit
     member testUpdateWolf : unit
     member testProcessLists : unit

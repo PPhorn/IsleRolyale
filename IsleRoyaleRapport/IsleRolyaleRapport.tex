@@ -83,6 +83,7 @@ Here we we're given an extended part of the code, which needed to be built in or
 This included an animal object, moose object (unfinished), wolf object (unfinished) and an object for the environment of the isle (also unfinished).
 
 \subsection*{Environment}
+The enviroment includes a board. The board consists of a width and two lists of animals. In enviroment there are several crucial functions that deals with the problems of updating the animals and drawing the board.
 
 \subsubsection*{Ticks}
 
@@ -99,6 +100,12 @@ The wolf object also inherits all fields and members of the animal object. The w
 
 
 \subsection*{Program description}
+
+\subsection*{Environment}
+The enviroment is handling the animals and drawing the board. The main function in enviroment is processLists as it is the only functions called when the method tick is called.
+processLists selects an animal passes it on to one of the two helperfunctions called handleMoose and handleWolf. In the handlefunction any dead animals are removed from the board and the selected animal
+is passed further on to the one of the two helperfunctions called updateMoose and updateWolf. The updateMoose function is responsible for the moose either giving birth or moving to a new position.
+The updateWolf function also has the added capablity of making the wolf eat a moose if any is located in one of the neighbouring places.
 
 \begin{figure}
 \centering

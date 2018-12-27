@@ -11,7 +11,6 @@ let main args =
   let wolves = if args.Length < 6 then 4 else int(args.[5])
   let wolfRep = if args.Length < 7 then 3 else int(args.[6])
   let wolfHung = if args.Length < 8 then 4 else int(args.[7])
-//  let givenArray = [|ticks; boardW; moose; mooseRep|]
 
   if args <> Array.empty then
     printfn "Arguments given to the function %A" args

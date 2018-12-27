@@ -195,6 +195,7 @@ fra listerne.*)
       _board.moose <- List.filter (fun m -> m.position <> None) _board.moose
       mList <- List.filter (fun m -> m.position <> None) mList
       (updateMoose _board m)
+
     let handleWolf w =
     //fjerner døde dyr fra wolfboard
       _board.wolves <- List.filter (fun w -> w.position <> None) _board.wolves
@@ -229,47 +230,38 @@ fra listerne.*)
     processLists (_board.moose, _board.wolves) // Intentionally left blank. Insert code that process animals here.
 // test members of functions in scope of environment class
   member this.testBoard = _board
+
   member this.testMooseNabour =
     let moose = _board.moose.[1]
-    checkNabour _board moose
+    printfn "checkNabour of random moose from isleRoyale over the course of
+running 3 checkNabour calls:"
+    for i = 1 to 3 do
+      printfn "%A. run: %A" i (checkNabour _board moose)
+      updateMoose _board moose
+
   member this.testWolfNabour =
     let wolf = _board.wolves.[1]
-    checkNabour _board wolf
+    printfn "checkNabour of random wolf from isleRoyale over the course of
+running 3 checkNabour calls:"
+    for i = 1 to 3 do
+      printfn "%A. run: %A" i (checkNabour _board wolf)
+      updateWolf _board wolf
+
   member this.testUpdateMoose =
     let moose = _board.moose.[1]
-    printfn "1.Position and reproduction value of random moose from isleRoyale:"
-    printfn "- Position: %A" moose.position
-    printfn "- Reproduction value: %A" moose.reproduction
-    printfn "2.updateMoose run - function return: %A" (updateMoose _board moose)
-    printfn "3.Position and reproduction level of same moose after 1 updateMoose:"
-    printfn "- Position: %A" moose.position
-    printfn "- Reproduction value: %A" moose.reproduction
+    printfn "Position and reproduction value of random moose from isleRoyale
+over the course of running 4 updateMoose calls:"
+    for i = 1 to 4 do
+    printfn "%A. update: Position: %A, Reproduction value: %A" i moose.position  moose.reproduction
     (updateMoose _board moose)
-    printfn "4. Position and reproduction level of same moose after 2 updateMoose:"
-    printfn "- Position: %A" moose.position
-    printfn "- Reproduction value: %A" moose.reproduction
-    (updateMoose _board moose)
-    printfn "5. Position and reproduction level of same moose after 3 updateMoose:"
-    printfn "- Position: %A" moose.position
-    printfn "- Reproduction value: %A" moose.reproduction
 
   member this.testUpdateWolf =
     let wolf = _board.wolves.[1]
-    printfn "1.Position and reproduction value of random wolf from isleRoyale:"
-    printfn "- Position: %A" wolf.position
-    printfn "- Reproduction value: %A" wolf.reproduction
-    printfn "2.updateWolf run - function return: %A" (updateWolf _board wolf)
-    printfn "3.Position and reproduction leves of same wolf after 1 updateWolf:"
-    printfn "- Position: %A" wolf.position
-    printfn "- Reproduction value: %A" wolf.reproduction
+    printfn "Position and reproduction value of random wolf from isleRoyale
+over the course of running 4 updateWolf calls:"
+    for i = 1 to 4 do
+    printfn "%A. update: Position: %A, Repro. value: %A, Hunger: %A" i wolf.position  wolf.position wolf.hunger
     (updateWolf _board wolf)
-    printfn "4. Position and reproduction level of same wolf after 2 updateWolf:"
-    printfn "- Position: %A" wolf.position
-    printfn "- Reproduction value: %A" wolf.reproduction
-    (updateWolf _board wolf)
-    printfn "5. Position and reproduction level of same wolf after 3 updateWolf:"
-    printfn "- Position: %A" wolf.position
-    printfn "- Reproduction value: %A" wolf.reproduction
 
   member this.testProcessLists =
     processLists (_board.moose, _board.wolves)
