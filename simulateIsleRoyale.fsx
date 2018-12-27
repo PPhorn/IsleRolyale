@@ -13,25 +13,23 @@ let main args =
   let wolfHung = if args.Length < 1 then 4 else int(args.[7])
 //  let givenArray = [|ticks; boardW; moose; mooseRep|]
 
-  //printfn "Arguments given to the function %A" args
+
+  printfn "Arguments given to the function %A" args
   //printfn "%A" args.[0]
 
   let isle = animals.environment(boardW, moose, mooseRep, wolves, wolfRep, wolfHung)
   //let isle = animals.environment(10, 4, 3, 2, 3, 9)
   //let en fil
 
-  //let file = nkadnæbEJ "%A" filename
-  let mutable popCount = "  T" + "   " + " M" + "   " + " W" + "\n" + "  " + string 0 + "   " + string isle.countMoose + "    " + string isle.countWolf
+  let mutable popCount = "T" + "," + "M" + "," + "W" + "\n" + string 0 + "," + string isle.countMoose + "," + string isle.countWolf
 
   for i = 1 to ticks do
     printfn "%A" isle
     isle.tick ()
     let theTick = i
-    popCount <- popCount + "\n" + "  " + string theTick + "   " + string isle.countMoose + "    " + string isle.countWolf
+    popCount <- popCount + "\n" + string theTick + "," + string isle.countMoose + "," + string isle.countWolf
   printfn "%s" popCount
 
-  use textFile = File.CreateText (fileName + ".txt")
-  textFile.Write popCount
   use textFile = File.CreateText (fileName + ".csv")
   textFile.Write popCount
 

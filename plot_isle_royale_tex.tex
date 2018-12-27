@@ -19,17 +19,17 @@
 \begin{axis}[
   axis y line*=left,
   xlabel=Ticks,
-  ylabel=Wolves,
+  ylabel=\textcolor{red}{Wolves}
 ]
-\addplot[mark=*,red] table [x=T, y=W, col sep=comma]{isle_royale_data.csv};
+\addplot[mark=*,red] table [x=T, y=W, col sep=comma]{Pop_IsleRoyale.csv};
 \end{axis}
 
 \begin{axis}[
   axis y line*=right,
   axis x line=none,
-  ylabel=Moose
+  ylabel=\textcolor{blue}{Moose}
 ]
-\addplot[mark=*,blue] table [x=T, y=M, col sep=comma]{isle_royale_data.csv};
+\addplot[mark=*,blue] table [x=T, y=M, col sep=comma]{Pop_IsleRoyale.csv};
 \end{axis}
 
 \end{tikzpicture}
