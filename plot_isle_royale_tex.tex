@@ -1,0 +1,39 @@
+\documentclass{article}
+
+% GRAPHICS
+\usepackage{tikz}
+\usepackage{pgfplots}
+\pgfplotsset{width=7cm,compat=1.3}
+
+\begin{document}
+
+\begin{figure}
+\centering
+\begin{tikzpicture}
+
+\pgfplotsset{
+    scale only axis,
+%    scaled x ticks=base 10:3,
+}
+
+\begin{axis}[
+  axis y line*=left,
+  xlabel=Ticks,
+  ylabel=Wolves,
+]
+\addplot[mark=*,red] table [x=T, y=W, col sep=comma]{isle_royale_data.csv};
+\end{axis}
+
+\begin{axis}[
+  axis y line*=right,
+  axis x line=none,
+  ylabel=Moose
+]
+\addplot[mark=*,blue] table [x=T, y=M, col sep=comma]{isle_royale_data.csv};
+\end{axis}
+
+\end{tikzpicture}
+\caption{Evolution og Wolfes and Moose population in a single simulation}
+\end{figure}
+
+\end{document}
