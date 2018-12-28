@@ -7,6 +7,7 @@
 \graphicspath{ {./images/} }
 \usepackage{listings}
 \usepackage{wrapfig}
+\usepackage{float}
 \usepackage{color}
 \definecolor{bluekeywords}{rgb}{0.13,0.13,1}
 \definecolor{greencomments}{rgb}{0,0.5,0}
@@ -157,7 +158,66 @@ The updateWolf function also has the added capablity of making the wolf eat a mo
 
 \subsection*{Test (afprøvning)}
 
-\subsection*{Eksperiment}
+\subsection*{Experiments}
+We have simulated three interesting experiments. One about hunger length, one about the size of the board and one about reproduction length. Small changes of the values shows a significant effect at the results. 
+
+\subsubsection*{Board comparison}
+The following comparison is about board width. If the board is large, as on Figure 1 where it is 40 X 40, the number of animals becomes rather large and the moose and the wolves co-exist throughout at least 80 ticks. 
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.60\textwidth]{Experiments/sim_board_b1}
+\caption{Input values: ticks: 80, board width: 40, moose: 20, moose rep-length: 5, wolves: 5, wolf rep-lenght: 5, wolf hunger length: 8}
+\end{figure}
+
+Figure 2 represent a simulated environment where the board is only 20 X 20. Here, the number of moose becomes approximately 250 at tick 20 while it is 600 at the larger board in Figure 1. The same difference can be observed with the wolves. Another interesting observation is that the moose are extinct at tick 50 - whey get eaten by the wolves in the small amount of space. 
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.60\textwidth]{Experiments/sim_board_b2} 
+\caption{Input values: ticks: 80, board width: 20, moose: 20, moose rep-length: 5, wolves: 5, wolf rep-lenght: 5, wolf hunger length: 8}
+\end{figure}
+
+\subsubsection*{Hunger length}
+
+Another experiment we have conducted focuses on the hunger length of the wolves. At Figure 3, the hunger length is rather shot, it is set to 4, so after 4 ticks the wolf will either die or have found a moose to eat. The result is, that only after 10 ticks the wolves are extinct while the moose keeps to increase in number.
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.60\textwidth]{Experiments/sim_hunlen_a1}
+\caption{Input values: ticks: 20, board width: 15, moose: 10, moose rep-length: 5, wolves: 5, wolf rep-length: 5, wolf hunger length: 4}
+\end{figure}
+
+When we change the hunger length from 4 to 6 we get another result. As shown in the graph at Figure 4 we see that wolves does not extinct any more, but the moose does instead. At the beginning, the moose increase in number but around tick 10 the amount of wolves are so high that the number of moose start to decrease and at tick 16 they are all dead.
+
+When the hunger length of the wolves is at 6, the wolves can exist for longer without eating. As the reproduction level is smaller than the hunger length, the wolf reproduce itself before it dies, and therefore they cannot extinct in this experiment, even if there are no moose left in the environment. Obviously, this means we should be conscious about the relation between the reproduction and the hunger length.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.60\textwidth]{Experiments/sim_hunlen_a2}
+\caption{Input values: ticks: 20, board width: 15, moose: 10, moose reproduction length: 5, wolves: 5, wolf reproduction length: 5, wolf hunger length: 6}
+\end{figure}
+
+
+\subsubsection*{Reproduction length}
+At Figure 5 and Figure 6 we see an experiment with variation in reproduction length. At Figure 5, the moose and the wolves have a longer reproduction length than on Figure 6. In both cases the number of moose increase rapidly within the first 20 ticks and then it stagnates.
+ 
+At Figure 5, we clearly see that the number of moose is dependent of the number of wolves and vice versa. At approximately tick 100 the number of moose decrease rapidly while the number of wolves reach 80 - the relation is about 1/5 the amount of moose. Then the number of wolves decreases again when the number of moose has reached a level under 200. The wolves die because of the small amount of food for them. \newline 
+Of all of our simulations, this one is probably the one where they can co-exists for the longest time.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.60\textwidth]{Experiments/sim_rep_c1}
+\caption{Input values: ticks: 150, boardw: 25, moose: 5, moose reproduction length: 4, wolves: 5, wolf reproduction length: 3, wolf hunger length: 4}
+\end{figure}
+
+If we change the reproduction length only by one, we see that the number of moose becomes even more, but the opposite can be said for wolves. It takes longer for them to increase significantly, but when they do, again we see that the number of moose decreaces. 
+
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.60\textwidth]{Experiments/sim_rep_c2}
+\caption{Input values: ticks: 160, boardw: 25, mooses: 5, moose rep-lenght: 3, wolves: 5, wolf rep-lenght: 4, wolf hunger lenght: 4}
+\end{figure}
 
 \subsection*{Konklussion}
 
