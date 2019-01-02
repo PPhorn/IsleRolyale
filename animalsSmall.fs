@@ -1,5 +1,5 @@
-
 module animals
+
 
 type symbol = char
 type position = int * int
@@ -140,11 +140,11 @@ to determine what it should do; give birth to a calf, or changes position.
 It it called by procesLists. *)
 /// <summary>
 /// updateMoose examines if the moose should give birth to a calf, or if it
-/// should change position.
+/// should change position and updates accordingly.
 /// </summary>
 /// <param name="b">The initial board</param>
 /// <param name="m">a moose that should be updated</param>
-/// <returns></returns>
+/// <returns>when successful returns null</returns>
   let updateMoose (b: board) (m: moose) =
     let someCalf = m.tick () // calls tick to check for a calf or for death
     if m.position = None then
@@ -174,7 +174,7 @@ or change position. It it called by procesLists. *)
 /// </summary>
 /// <param name="b">The initial board</param>
 /// <param name="w">a wolf that should be updated</param>
-/// <returns></returns>
+/// <returns>when successful returns null</returns>
   let updateWolf (b:board) (w: wolf) =
     let someCub = w.tick () // calls tick to check for a cub or if it is dead
     if w.position = None then
