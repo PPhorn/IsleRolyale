@@ -140,6 +140,19 @@ The \texttt{updateWolf} function does the same, but also has the added capabilit
 
 \subsection*{Test - to do}
 
+Seeing as we were given a substantial code base created by our professor Jon Sporring, we were left with a limited amount of functions, which required testing.
+Our first challenge in testing our own contribution to the code, was how to access local functions in the scope of classes and members, from outside “their”git  class, as it is standard in object oriented programming, that local functions are not editable nor accessible from outside their ambient scope.
+To solve this, we chose to create members, within the scope of the respective class, which thereby had access to the given function. This way we were able to access and test the functions from a dedicated test file.
+In all we’ve tested the following functions, which are all described in the section Program description:
+\begin{itemize}
+\item \texttt{checkNabour}
+\item \texttt{updateMoose}
+\item \texttt{updateWolf}
+\item \texttt{processLists}
+\end{itemize}
+
+We also did an initial test of the \texttt{board} function, which mainly served as a pilot test of our general method for testing local functions.
+
 \subsection*{Experiments}
 We have simulated three interesting experiments. One about hunger length, one about the size of the board and one about reproduction length. Small changes of the values shows a significant effect at the results. 
 
