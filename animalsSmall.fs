@@ -201,6 +201,7 @@ fra listerne.*)
       _board.wolves <- List.filter (fun w -> w.position <> None) _board.wolves
       wList <- List.filter (fun m -> m.position <> None) wList
       (updateWolf _board w)
+
     // The matchet chooses a random animals from the lists and processes it
     match (mList, wList) with
     | ([], []) -> ()

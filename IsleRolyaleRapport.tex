@@ -136,6 +136,9 @@ The environment is handling the animals and drawing the board. The main function
 The \texttt{updateWolf} function does the same, but also has the added capability of making the wolf eat a moose if any is located in one of the neighbouring coordinates.
 
 \subsubsection*{processList}
+\texttt{processLists} is shown below. It gets a wolves list and a moose list as input and remove dead animals from them in \texttt{handleWolf} and \texttt{handleMoose}. Via a match, it then processes those lists.
+
+\lstinputlisting[language=FSharp, firstline=189, lastline=217]{animalsSmall.fs}
 
 \subsubsection*{checkNabour}
 
@@ -146,7 +149,7 @@ The code from \texttt{updateWolf} is below. First is udates a tick to see whethe
 
 As mentioned, \texttt{updateMoose} is very similar, but shorter. Therefore it is not shown here.
 
-\lstinputlisting[language=FSharp, firstline=151, lastline=182]{animalsSmall.fs}
+\lstinputlisting[language=FSharp, firstline=153, lastline=184]{animalsSmall.fs}
 
 
 \subsection*{Test - to do}
