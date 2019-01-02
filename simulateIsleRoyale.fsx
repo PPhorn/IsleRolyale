@@ -6,10 +6,10 @@ let main args =
   let ticks = if args.Length < 1 then 40 else int(args.[0])
   let fileName = if args.Length < 2 then "Pop_IsleRoyale" else args.[1]
   let boardW = if args.Length < 3 then 10 else int(args.[2])
-  let moose = if args.Length < 4 then 15 else int(args.[3])
-  let mooseRep = if args.Length < 5 then 3 else int(args.[4])
-  let wolves = if args.Length < 6 then 4 else int(args.[5])
-  let wolfRep = if args.Length < 7 then 3 else int(args.[6])
+  let moose = if args.Length < 4 then 30 else int(args.[3])
+  let mooseRep = if args.Length < 5 then 10 else int(args.[4])
+  let wolves = if args.Length < 6 then 2 else int(args.[5])
+  let wolfRep = if args.Length < 7 then 10 else int(args.[6])
   let wolfHung = if args.Length < 8 then 4 else int(args.[7])
 
   if args <> Array.empty then
