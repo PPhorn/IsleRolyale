@@ -4,6 +4,7 @@
 \usepackage[margin=2.5cm]{geometry}
 \usepackage{hyperref}
 \usepackage{graphicx}
+\usepackage{parskip}
 \graphicspath{{figures/}{anotherFigureDirectory/}}
 \graphicspath{ {./images/} }
 \usepackage{listings}
@@ -152,7 +153,7 @@ As mentioned, \texttt{updateMoose} is very similar, but shorter. Therefore it is
 \lstinputlisting[language=FSharp, firstline=153, lastline=184]{animalsSmall.fs}
 
 
-\subsection*{Test - to do}
+\subsection*{Test}
 
 Seeing as we were given a substantial code base created by our professor Jon Sporring, we were left with a limited amount of functions, which required testing.
 Our first challenge in testing our own contribution to the code, was how to access local functions in the scope of classes and members, from outside “their”git  class, as it is standard in object oriented programming, that local functions are not editable nor accessible from outside their ambient scope.
@@ -166,6 +167,16 @@ In all we’ve tested the following functions, which are all described in the se
 \end{itemize}
 
 We also did an initial test of the \texttt{board} function, which mainly served as a pilot test of our general method for testing local functions.
+
+\subsubsection{Test of \texttt{checkNabour}}
+In the test of the \texttt{checkNabour} function, we tested with both a Moose and Wolf as animal input. On each animal object we did a run of 3 coherent calls to the function on the same randomly picked moose and wolf respectively, thereby disclosing a variety of function outputs, showing that the given animal does infect change position on the board, as the surrounding coordinates sometimes changes, and sometimes stays the same, in the case of the animal giving birth to a calf/cup.
+
+\subsubsection{Test of \texttt{updateMoose} \&  \texttt{updateWolf}}
+As with the test of  \texttt{checkNabour}, when testing \texttt{updateMoose} and  \texttt{updateWolf} we did a series of coherent calls to the function on a randomly picked moose and wolf. Again this shows how the position and reproduction length is updated as well as the hunger length, when testing the \texttt{updateWolf}. We see how the position coordinates and reproduction and hunger values change or remain the same, depending on whether a wolf eats or whether either of the animals give birth, thereby does not move and in which case their reproduction length is reset to it’s initial value. 
+
+\subsubsection{Test of \texttt{processLists}}
+Testing of the \texttt{processLists} function results in the least exiting result, as the output of a successful run of this function in any case will result in \texttt{<null>}, when running the function 
+independent of the rest of the IsleRoyale program.
 
 \subsection*{Experiments}
 We have simulated three interesting experiments. One about hunger length, one about the size of the board and one about reproduction length. Small changes of the values shows a significant effect at the results. 
@@ -236,6 +247,27 @@ To improve the representation we could have included the other animals in the en
 \section*{Appendix}
 
 \subsection*{Brugervejledning - to do}
+The application of the Isle Royale is designed to take certain values to initialize the simulation of the wolf and moose population. Specifically the application takes 7 parameters and one filename designed to be given in the following order:
+\begin{enumerate}
+\item Amount of ticks the users wishes to simulate
+\item The filename used for the file the application creates to hold the population data of the current simulation. NOTE: the application automatically applies the file type .csv to the data file. Therefor the users should only insert a title leaving out any whitespaces and any typesetting symbols using only casing to indicated wordseperation. E.g. “IsleRoyale”.
+\item Width of the application board
+\item Initial population size of moose
+\item Length of moose reproduction time measured in number of ticks it takes for a moose to reproduce
+\item Initial population size of wolves
+\item Length of wolf reproduction time measured in number of ticks it takes for a wolf to reproduce
+\item Length of wolf hunger measured in number of ticks a wolf can survive without food
+\end{enumerate}
+
+If the user choses to not apply any values when running the application, the default simulation parameters and filename is set to: mono testIsleRoyale.exe 40 Pop\_IsleRoyale 10 30 10 2 10 4.
+
+To run the applikation through the console do the following:
+
+\begin{itemize}
+\item Compile the application library by running the following command: fsharpc -a animalsSmall.fsi animalsSmall.fs
+\item Next compile the .dll and .fsx file by running the following command: fsharpc -r animalsSmall.dll testIsleRoyale.fsx
+\item Finally run the application by the command: mono testIsleRoyale.exe either with or without the self defined application parameters described above.
+\end{itemize}
 
 \subsection*{Programtekst - to do}
 
