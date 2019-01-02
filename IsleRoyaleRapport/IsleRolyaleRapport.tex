@@ -63,32 +63,7 @@ From the offset of the assignment, we we're given an unfinished library and a co
 Here we we're given an extended part of the code, which needed to be built in order to meet the assignment criteria.
 This included an animal object, moose object (unfinished), wolf object (unfinished) and an object for the environment of the isle (also unfinished).
 
-\subsection*{Environment}
-The enviroment includes a board. The board consists of a width and two lists of animals. In enviroment there are several crucial functions that deals with the problems of updating the animals and drawing the board.
-
-\subsubsection*{Ticks}
-
-\subsubsection*{Moose}
-The Moose object is created to live a simple life, so to speak. Aside from the fields and members inherited from the animal object, it's methods consists of just two members: One enabling reproduction and one handling the update of the reproduction and thereby the potential birth of a calf.
-
-\subsubsection*{Wolwes}
-The wolf object also inherits all fields and members of the animal object. The wolf, as the Moose, can reproduce and give birth to a cub in order to increase the population of wolfs on the island. Moreover the wolf can eat a moose populating a nearby position in the environment. 
-
-
-
-
-
-
-
-\subsection*{Program description}
-
-\subsection*{Environment}
-The enviroment is handling the animals and drawing the board. The main function in enviroment is processLists as it is the only functions called when the method tick is called.
-processLists selects an animal passes it on to one of the two helperfunctions called handleMoose and handleWolf. In the handlefunction any dead animals are removed from the board and the selected animal
-is passed further on to the one of the two helperfunctions called updateMoose and updateWolf. The updateMoose function is responsible for the moose either giving birth or moving to a new position.
-The updateWolf function also has the added capablity of making the wolf eat a moose if any is located in one of the neighbouring places.
-
-\begin{figure}
+\begin{figure}[H]
 \centering
 \begin{tikzpicture} [node distance = 1.5 cm, auto]
 		\node [cloud] (start) {New environment is created};
@@ -135,6 +110,33 @@ The updateWolf function also has the added capablity of making the wolf eat a mo
 \caption{Flow of Isle Royale environment}
 \label{fig:gameflow}
 \end{figure}
+
+
+\subsection*{Environment}
+The enviroment includes a board. The board consists of a width and two lists of animals. In environment, there are several crucial functions that deals with the problems of updating the animals and drawing the board, e.g. \texttt{updateMoose}, \texttt{updateWolf}, \texttt{draw}  and \texttt{tick}.
+
+\subsubsection*{Ticks}
+The method \texttt{tick} calls the function \texttt{procesLists} that updates different entities, as mentioned. So every time a tick is called, the environment at the board is updated. Thereby, tick functions as a time unity and every time a tick is called, we can imagine that a month or perhaps a week has passed. At Figure 1, we see that the \texttt{tick} has a central position that activates updates for the animals.
+
+\subsubsection*{Moose}
+The Moose object is created to live a simple life, so to speak. Aside from the fields and members inherited from the animal object, it's methods consists of just two members: One enabling reproduction and one handling the update of the reproduction and thereby the potential birth of a calf.
+
+\subsubsection*{Wolwes}
+The wolf object also inherits all fields and members of the animal object. The wolf, as the Moose, can reproduce and give birth to a cub in order to increase the population of wolfs on the island. Moreover the wolf can eat a moose populating a nearby position in the environment. 
+
+
+
+
+
+
+
+\subsection*{Program description}
+
+\subsubsection*{Environment}
+The environment is handling the animals and drawing the board. The main function in environment is \texttt{processLists}  as it is the only functions called when the method tick is called.
+\texttt{processLists} selects an animal passes it on to one of the two helper functions called \texttt{handleMoose}  and \texttt{handleWolf}. In those any dead animals are removed from the board and the selected animal is passed further on to the one of the two functions \texttt{updateMoose} and \texttt{updateWolf}. The \texttt{updateMoose} function is responsible for the moose either giving birth or moving to a new position.
+The \texttt{updateWolf} function does the same, but also has the added capability of making the wolf eat a moose if any is located in one of the neighbouring coordinates.
+
 
 \subsection*{Test - to do}
 
@@ -199,7 +201,9 @@ If we change the reproduction length only by one, we see that the number of moos
 \caption{Input values: ticks: 160, boardw: 25, mooses: 5, moose rep-lenght: 3, wolves: 5, wolf rep-lenght: 4, wolf hunger lenght: 4}
 \end{figure}
 
-\subsection*{Conclusion - to do}
+\subsection*{Conclusion and discussion}
+We solved the problem, and programmed the enviroment to mimic the real world to a certain degree. It is obviously difficult to represent a complicated enviroment with only a handful of parameters, but the representation that we have build is has many similarities to the enviroment. There is a clear correlation between the two poplution of animals.
+To improve the representation we could have included the other animals in the enviroment, the seasons, improved the interaction between the wolf and the moose, and considered that the wolf is a social animal. Another aspect that we could have considered would be that of the breeding season and that a moose usually get one calf while the wolf tends to get several cubs.
 
 \newpage
 \section*{Appendix}
