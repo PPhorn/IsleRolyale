@@ -106,19 +106,21 @@ type environment (boardWidth : int, NMooses : int, mooseRepLen : int, NWolves : 
       j <- rnd.Next b.width
     (i,j)
 
-(*checkNabour returner en liste med tupler, der har informationer om naboerne, dvs.
-symbolerne på pladserne. Lav derefter en funktion, der håndtere
+(*checkNabour returner en liste med tupler, der har informationer om naboerne,
+dvs. symbolerne på pladserne. Lav derefter en funktion, der håndtere
 situationen udfra, hvad der er i nabo koordinaterne.*)
   let checkNabour (b: board) (a: animal) =
-    let arr = draw b
-    let NC =
+    let arr = draw b // draws the board with animals and empty fields
+    let nc = // list of neighbouring coordinates
       [(-1, -1); (0, -1); (1, -1); (1, 0); (1, 1); (0, 1); (-1, 1); (-1, 0)]
+    // adding the the animal's position to neighbour coordinates
     let Neighbour = List.map (fun (x,y) ->
-      (fst (Option.get a.position) + x, snd (Option.get a.position) + y)) NC
-    let mutable nabour = List.empty<neighbour>
+      (fst (Option.get a.position) + x, snd (Option.get a.position) + y)) nc
+    let mutable nabour = List.empty<neighbour> // mutable empty list
     for k = 0 to (Neighbour.Length - 1) do
       let nx = (fst Neighbour.[k])
       let ny = (snd Neighbour.[k])
+      // adds symbols to the coordinates and concats to the list nabour
       if nx > 0 && nx < _board.width && ny > 0 && ny < _board.width then
         nabour <- (Neighbour.[k], arr.[nx, ny]) :: nabour
     nabour
@@ -189,17 +191,17 @@ fra listerne.*)
     let mutable wList = wofList
 
     let handleMoose m =
-    //remove dead animals from mooseboard
+    //remove dead animals from moose board
       _board.moose <- List.filter (fun m -> m.position <> None) _board.moose
       mList <- List.filter (fun m -> m.position <> None) mList
       (updateMoose _board m)
 
     let handleWolf w =
-    //fjerner døde dyr fra wolfboard
+    //remove dead animals from wolves board
       _board.wolves <- List.filter (fun w -> w.position <> None) _board.wolves
       wList <- List.filter (fun m -> m.position <> None) wList
       (updateWolf _board w)
-// matchet vælger et tilfældigt dyr fra listerne og processeserer det.
+    // The matchet chooses a random animals from the lists and processes it
     match (mList, wList) with
     | ([], []) -> ()
     | ([], w :: wList) -> handleWolf w

@@ -131,12 +131,22 @@ The wolf object also inherits all fields and members of the animal object. The w
 
 \subsection*{Program description}
 
-\subsubsection*{Environment}
 The environment is handling the animals and drawing the board. The main function in environment is \texttt{processLists}  as it is the only functions called when the method tick is called.
 \texttt{processLists} selects an animal passes it on to one of the two helper functions called \texttt{handleMoose}  and \texttt{handleWolf}. In those any dead animals are removed from the board and the selected animal is passed further on to the one of the two functions \texttt{updateMoose} and \texttt{updateWolf}. The \texttt{updateMoose} function is responsible for the moose either giving birth or moving to a new position.
 The \texttt{updateWolf} function does the same, but also has the added capability of making the wolf eat a moose if any is located in one of the neighbouring coordinates.
 
-\lstinputlisting[language=FSharp, firstline=151, lastline=184]{animalsSmall.fs}
+\subsubsection*{processList}
+
+\subsubsection*{checkNabour}
+
+\subsubsection*{updateWolf}
+
+
+The code from \texttt{updateWolf} is below. First is udates a tick to see whether the wolf has died. Then it looks for a moose in the neighbour position to find out whether it should eat. If so, the wolf eats the moose and goes to the moose' position. If it is not so, the function looks for an empty position if a cub is born, so that it can give birth to it by giving the cub a position. Else, it moves to that position itself. 
+
+As mentioned, \texttt{updateMoose} is very similar, but shorter. Therefore it is not shown here.
+
+\lstinputlisting[language=FSharp, firstline=151, lastline=182]{animalsSmall.fs}
 
 
 \subsection*{Test - to do}
