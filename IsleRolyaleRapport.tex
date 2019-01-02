@@ -1,3 +1,4 @@
+% !TEX encoding = UTF-8 Unicode
 \documentclass[a4paper]{report}
 \usepackage{tikz}
 \usepackage[margin=2.5cm]{geometry}
@@ -104,8 +105,6 @@ This included an animal object, moose object (unfinished), wolf object (unfinish
         \path [line] (wlive) -- (eat);
         \path [line] (wlive) -- (movew);
         \path [line] (wlive) -- (wgiveb);
-
-
 \end{tikzpicture}
 \caption{Flow of Isle Royale environment}
 \label{fig:gameflow}
@@ -136,6 +135,8 @@ The wolf object also inherits all fields and members of the animal object. The w
 The environment is handling the animals and drawing the board. The main function in environment is \texttt{processLists}  as it is the only functions called when the method tick is called.
 \texttt{processLists} selects an animal passes it on to one of the two helper functions called \texttt{handleMoose}  and \texttt{handleWolf}. In those any dead animals are removed from the board and the selected animal is passed further on to the one of the two functions \texttt{updateMoose} and \texttt{updateWolf}. The \texttt{updateMoose} function is responsible for the moose either giving birth or moving to a new position.
 The \texttt{updateWolf} function does the same, but also has the added capability of making the wolf eat a moose if any is located in one of the neighbouring coordinates.
+
+\lstinputlisting[language=FSharp, firstline=151, lastline=184]{animalsSmall.fs}
 
 
 \subsection*{Test - to do}
