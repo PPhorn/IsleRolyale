@@ -234,7 +234,7 @@ fra listerne.*)
   member this.testMooseNabour =
     let moose = _board.moose.[1]
     printfn "checkNabour of random moose from isleRoyale over the course of
-running 3 checkNabour calls:"
+3 checkNabour calls:"
     for i = 1 to 3 do
       printfn "%A. run: %A" i (checkNabour _board moose)
       updateMoose _board moose
@@ -242,7 +242,7 @@ running 3 checkNabour calls:"
   member this.testWolfNabour =
     let wolf = _board.wolves.[1]
     printfn "checkNabour of random wolf from isleRoyale over the course of
-running 3 checkNabour calls:"
+3 checkNabour calls:"
     for i = 1 to 3 do
       printfn "%A. run: %A" i (checkNabour _board wolf)
       updateWolf _board wolf
@@ -250,7 +250,7 @@ running 3 checkNabour calls:"
   member this.testUpdateMoose =
     let moose = _board.moose.[1]
     printfn "Position and reproduction value of random moose from isleRoyale
-over the course of running 4 updateMoose calls:"
+over the course of 4 updateMoose calls:"
     for i = 1 to 4 do
     printfn "%A. update: Position: %A, Reproduction value: %A" i moose.position  moose.reproduction
     (updateMoose _board moose)
@@ -258,7 +258,7 @@ over the course of running 4 updateMoose calls:"
   member this.testUpdateWolf =
     let wolf = _board.wolves.[1]
     printfn "Position and reproduction value of random wolf from isleRoyale
-over the course of running 4 updateWolf calls:"
+over the course of 4 updateWolf calls:"
     for i = 1 to 4 do
     printfn "%A. update: Position: %A, Repro. value: %A, Hunger: %A" i wolf.position  wolf.position wolf.hunger
     (updateWolf _board wolf)
