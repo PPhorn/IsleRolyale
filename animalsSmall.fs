@@ -81,7 +81,8 @@ type board =
    mutable wolves : wolf list;}
 
 /// An environment is a chess-like board with all animals and implenting rules.
-type environment (boardWidth : int, NMooses : int, mooseRepLen : int, NWolves : int, wolvesRepLen : int, wolvesHungLen : int) =
+type environment (boardWidth : int, NMooses : int, mooseRepLen : int
+  , NWolves : int, wolvesRepLen : int, wolvesHungLen : int) =
   let _board : board = {
     width = boardWidth;
     moose = List.init NMooses (fun i -> moose(mooseRepLen));
@@ -282,7 +283,8 @@ from the lists. It is called by tick. *)
     printfn "Position and reproduction value of random moose from isleRoyale
 over the course of 4 updateMoose calls:"
     for i = 1 to 4 do
-    printfn "%A. update: Position: %A, Reproduction value: %A" i moose.position  moose.reproduction
+    printfn "%A. update: Position: %A, Reproduction value: %A" i moose.position
+     moose.reproduction
     (updateMoose _board moose)
 
   member this.testUpdateWolf =
@@ -290,7 +292,8 @@ over the course of 4 updateMoose calls:"
     printfn "Position and reproduction value of random wolf from isleRoyale
 over the course of 4 updateWolf calls:"
     for i = 1 to 4 do
-    printfn "%A. update: Position: %A, Repro. value: %A, Hunger: %A" i wolf.position  wolf.position wolf.hunger
+    printfn "%A. update: Position: %A, Repro. value: %A, Hunger: %A" i
+     wolf.position  wolf.position wolf.hunger
     (updateWolf _board wolf)
 
   member this.testProcessLists =
