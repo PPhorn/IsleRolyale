@@ -32,6 +32,7 @@ type animal (symb : symbol, repLen : int) =
 type moose (repLen : int) =
   inherit animal (mSymbol, repLen)
 
+/// giveBirth gives a calf a position if the reproduction length reaches zero
   member this.giveBirth () =
     this.updateReproduction ()
     if this.reproduction = 0 then
@@ -39,6 +40,7 @@ type moose (repLen : int) =
     else
       None
 
+/// if the moose is not dead it calls giveBirth
   member this.tick () : moose option =
     match this.position with
     | Some position -> (this.giveBirth ())
@@ -57,7 +59,7 @@ type wolf (repLen : int, hungLen : int) =
   member this.resetHunger () =
     _hunger <- hungLen
 
-/// give birth to a cub
+/// giveBirth gives a cub a position when the reproduction length reaches zero
   member this.giveBirth () =
     this.updateReproduction ()
     if this.reproduction <= 0 then
@@ -65,12 +67,11 @@ type wolf (repLen : int, hungLen : int) =
     else
       None
 
-/// if the wolf is not dead, it calls update hunger and give birth
+/// if the wolf is not dead, it calls updateHunger and giveBirth
   member this.tick () : wolf option =
     match this.position with
     | Some position -> (this.updateHunger (); this.giveBirth ())
     | None -> None
-
 
 /// A board is a chess-like board implicitly representedy by its width and
 ///coordinates of the animals.
@@ -106,8 +107,16 @@ type environment (boardWidth : int, NMooses : int, mooseRepLen : int, NWolves : 
       j <- rnd.Next b.width
     (i,j)
 
-(*checkNabour returns a list with tuples with information on coordinates and
-symbols.*)
+(*checkNabour makes a list with neighbour coordinates and symbols to check
+whether a position consists of a wolf, a moose or is empty. It is used by the
+updateWolf and updateMoose functions*)
+/// <summary>
+/// checkNabour returns a list with tuples with information on coordinates and
+///symbols
+/// </summary>
+/// <param name="b">The initial board</param>
+/// <param name="a">animal that can by a moose or a wolf</param>
+/// <returns>a tuple list with coordinates and symbols</returns>
   let checkNabour (b: board) (a: animal) =
     let arr = draw b /// draws the board with animals and empty fields
     let nc = /// list of neighbouring coordinates
@@ -117,19 +126,28 @@ symbols.*)
       (fst (Option.get a.position) + x, snd (Option.get a.position) + y)) nc
     let mutable nabour = List.empty<neighbour> // mutable empty list
     for k = 0 to (Neighbour.Length - 1) do
-      let nx = (fst Neighbour.[k])
-      let ny = (snd Neighbour.[k])
-      // adds symbols to the coordinates and concats to the list nabour
+      let nx = (fst Neighbour.[k]) // x coordinate
+      let ny = (snd Neighbour.[k]) // y coordinate
+      // checks whether the coordinates are inside the board
       if nx > 0 && nx < _board.width && ny > 0 && ny < _board.width then
+      // adds symbols to the coordinates and concats to the list nabour
         nabour <- (Neighbour.[k], arr.[nx, ny]) :: nabour
     nabour
 
-(* updateMoose examines if the moose should give birth to a calf, or if it
-should change position.*)
+(* updateMoose processes the life of the mooses. It uses if - else statements
+to determine what it should do; give birth to a calf, or changes position.
+It it called by procesLists. *)
+/// <summary>
+/// updateMoose examines if the moose should give birth to a calf, or if it
+/// should change position.
+/// </summary>
+/// <param name="b">The initial board</param>
+/// <param name="m">a moose that should be updated</param>
+/// <returns></returns>
   let updateMoose (b: board) (m: moose) =
-    let someCalf = m.tick () // calls tick to check for a calf
+    let someCalf = m.tick () // calls tick to check for a calf or for death
     if m.position = None then
-      ()
+      () // nothing happens if the moose is dead and has position None
     else
       let list = (checkNabour b m) //list of neighbour position
       if (List.exists (fun ((_,_),x) -> x = eSymbol) list) then
@@ -146,13 +164,20 @@ should change position.*)
         if someCalf <> None then
           m.resetReproduction() // reset reproduction to original length
 
-
-(* updateWolf looks for a moose it can eat, if non, it gives a cub a position if
-any, if non, it changes position. *)
+(* updateWolf processes the life of the mooses. It uses if - else statements
+to determine what it should do; look for a moose it can eat, give birth to a cub
+or change position. It it called by procesLists. *)
+/// <summary>
+/// updateWolf looks for a moose it can eat, if non, it gives a cub a position
+/// if any, if non, it changes position.
+/// </summary>
+/// <param name="b">The initial board</param>
+/// <param name="w">a wolf that should be updated</param>
+/// <returns></returns>
   let updateWolf (b:board) (w: wolf) =
-    let someCub = w.tick ()
+    let someCub = w.tick () // calls tick to check for a cub or if it is dead
     if w.position = None then
-      ()
+      () // nothing happens if the wolf is dead and has position None
     else
       let list = (checkNabour b w)
       let anyMoose = // looks for any moose
@@ -182,26 +207,31 @@ any, if non, it changes position. *)
             (List.find (fun ((_,_),x) -> x = eSymbol) list)
           w.position <- Some (fst newpos) //wolf moves position
 
-
-(*processLists calls updateMoose and updateWolf and removes dead animals from
-the lists.*)
+(* processLists is a recursive function that processes the animals by going
+through a moose and a wolf list and processes each animal in turn by updating
+them via a call to updateMoose and updateWolf, and removes the dead animals
+from the lists. It is called by tick. *)
+/// <summary>
+/// processLists calls updateMoose and updateWolf and removes dead animals from
+/// the lists.
+/// </summary>
+/// <param name="mosList">a mutable moose list</param>
+/// <param name="wofList">a mutable wolf list</param>
+/// <returns>null</returns>
   let rec processLists (mosList: moose List, wofList : wolf List) =
     let mutable mList = mosList
     let mutable wList = wofList
-
     let handleMoose m =
     //remove dead animals from moose board
       _board.moose <- List.filter (fun m -> m.position <> None) _board.moose
       mList <- List.filter (fun m -> m.position <> None) mList
       (updateMoose _board m)
-
     let handleWolf w =
     //remove dead animals from wolves board
       _board.wolves <- List.filter (fun w -> w.position <> None) _board.wolves
       wList <- List.filter (fun m -> m.position <> None) wList
       (updateWolf _board w)
-
-    // The matchet chooses a random animals from the lists and processes it
+    // The match chooses a random animals from the lists and processes it
     match (mList, wList) with
     | ([], []) -> ()
     | ([], w :: wList) -> handleWolf w
@@ -215,20 +245,20 @@ the lists.*)
                                     handleWolf w
                                     processLists (m::mList, wList)
 
-// populate the board with animals placed at random.
+/// populate the board with animals placed at random.
   do for m in _board.moose do
        m.position <- Some (anyEmptyField _board)
   do for w in _board.wolves do
        w.position <- Some (anyEmptyField _board)
 
-// bredden og højden
+/// board width
   member this.size = boardWidth*boardWidth
   member this.countMoose = _board.moose.Length
   member this.countWolf = _board.wolves.Length
   member this.board = _board
   member this.tick () =
     processLists (_board.moose, _board.wolves)
-// test members of functions in scope of environment class
+/// test members of functions in scope of environment class
   member this.testBoard = _board
 
   member this.testMooseNabour =
