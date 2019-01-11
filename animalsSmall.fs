@@ -32,7 +32,15 @@ type animal (symb : symbol, repLen : int) =
 type moose (repLen : int) =
   inherit animal (mSymbol, repLen)
 
-/// giveBirth gives a calf a position if the reproduction length reaches zero
+(*giveBirth calls updateReproduction so that reproduction will be counted down.
+In addition, it gives a calf a position if the reproduction length reaches zero.
+giveBirth is call by tick*)
+/// <summary>
+/// giveBirth returns some or none and gives a position to a potential calf.
+/// </summary>
+/// <returns>
+/// some or none moose
+/// </returns>
   member this.giveBirth () =
     this.updateReproduction ()
     if this.reproduction = 0 then
@@ -40,7 +48,7 @@ type moose (repLen : int) =
     else
       None
 
-/// if the moose is not dead it calls giveBirth
+(* tick if the moose is not dead it calls giveBirth *)
   member this.tick () : moose option =
     match this.position with
     | Some position -> (this.giveBirth ())
