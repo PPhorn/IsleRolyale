@@ -133,22 +133,28 @@ The environment is handling the animals and drawing the board. The main function
 The \texttt{updateWolf} function does the same, but also has the added capability of making the wolf eat a moose if any is located in one of the neighbouring coordinates.
 
 \subsection{processList}
-\texttt{processLists} is shown below. It gets a wolves list and a moose list as input and remove dead animals from them in \texttt{handleWolf} and \texttt{handleMoose}. Via a match, it then processes those lists.
+\texttt{processLists} is shown below. It solves the problem that in other functions we give birth to new wolves and moose and put them in the their lists, but we do not remove the animals, when a moose or wolf is killed. We do this in processLists by filtering the lists where we remove the dead animals. This is done  in \texttt{handleWolf} and \texttt{handleMoose}. 
+
+The other thing the function does is that it recursively processes the existing moose and wolves via a match of their lists. This means that for each animal we call updateMoose or updateWolf and update e.g. a specific moose with a new cub or a new position.
 
 \lstinputlisting[language=FSharp, firstline=252, lastline=277]{animalsSmall.fs}
 
 \subsection{checkNabour}
-The check \texttt{checkNabour} function returns a list with the neighbouring coordinates and their symbols. The update functions use it to find out whether the wolf should eat a moose, give birth or move by checking for moose or empty symbols.
+The check \texttt{checkNabour} function is used by the update functions to find out whether the wolf should eat a moose, give birth or move by checking for moose or empty symbols. The moose use it to check for a new position to either her cub or herself.
+
+The list consists of the neighbouring coordinates and their symbols. The neighbour coordinates are found by adding the giving position with tuples of (-1,-1), (0,-1) and so forth. Then we run thought the board and the symbols of the neighbouring positions are added. Then we filter the list to take away any positions outside of the board.
+
 
 
 \lstinputlisting[language=FSharp, firstline=151, lastline=166]{animalsSmall.fs}
 
 \subsection{updateWolf}
 
+\texttt{updateWolf} and \texttt{updateMoose} handles the lives of the animals. They make them move on the board, reproduce and eat.
 
-The code from \texttt{updateWolf} is below. First is udates a tick to see whether the wolf has died. Then it looks for a moose in the neighbour position to find out whether it should eat. If so, the wolf eats the moose and goes to the moose' position. If it is not so, the function looks for an empty position if a cub is born, so that it can give birth to it by giving the cub a position. Else, it moves to that position itself. 
+The code from \texttt{updateWolf} is below. Firstly it updates a tick to see whether the wolf has died. Then it looks for a moose in the neighbour position to find out whether it should eat. If so, the wolf eats the moose and goes to the moose' position. If it is not so, the function looks for an empty position if a cub is born, so that it can give birth to it by giving the cub a position. Else, it moves to that position itself. 
 
-As mentioned, \texttt{updateMoose} is very similar, but shorter. Therefore it is not shown here.
+As mentioned, \texttt{updateMoose} is very similar, but shorter.
 
 \lstinputlisting[language=FSharp, firstline=208, lastline=239]{animalsSmall.fs}
 
