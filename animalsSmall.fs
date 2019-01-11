@@ -33,7 +33,7 @@ type moose (repLen : int) =
   inherit animal (mSymbol, repLen)
 
 (*giveBirth calls updateReproduction so that reproduction will be counted down.
-In addition, it gives a calf a position if the reproduction length reaches zero.
+It gives a new moose, a calf a position if the reproduction length reaches zero.
 giveBirth is call by tick*)
 /// <summary>
 /// giveBirth returns some or none and gives a position to a potential calf.
@@ -48,7 +48,14 @@ giveBirth is call by tick*)
     else
       None
 
-(* tick if the moose is not dead it calls giveBirth *)
+(* tick matches a moose position with some and none. If there is a moose, the
+function calls giveBirth. tick is called by updateMoose. *)
+/// <summary>
+/// If there is a moose, the function calls giveBirth.
+/// </summary>
+/// <returns>
+/// some or none moose
+/// </returns>
   member this.tick () : moose option =
     match this.position with
     | Some position -> (this.giveBirth ())
@@ -67,7 +74,15 @@ type wolf (repLen : int, hungLen : int) =
   member this.resetHunger () =
     _hunger <- hungLen
 
-/// giveBirth gives a cub a position when the reproduction length reaches zero
+(*giveBirth calls updateReproduction so that reproduction will be counted down.
+It gives a new wolf - a cub a position if the reproduction length reaches zero.
+giveBirth is call by tick*)
+/// <summary>
+/// giveBirth returns some or none and gives a position to a potential cub.
+/// </summary>
+/// <returns>
+/// some or none wolf
+/// </returns>
   member this.giveBirth () =
     this.updateReproduction ()
     if this.reproduction <= 0 then
@@ -75,7 +90,14 @@ type wolf (repLen : int, hungLen : int) =
     else
       None
 
-/// if the wolf is not dead, it calls updateHunger and giveBirth
+(* tick matches a wolf position with some and none. If there is a wolf, the
+function calls updateHunger and giveBirth. tick is called by updateWolf. *)
+/// <summary>
+/// If there is a new wolf, the function calls updateHunger and giveBirth.
+/// </summary>
+/// <returns>
+/// some or none wolf
+/// </returns>
   member this.tick () : wolf option =
     match this.position with
     | Some position -> (this.updateHunger (); this.giveBirth ())
