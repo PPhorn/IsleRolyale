@@ -32,7 +32,15 @@ type animal (symb : symbol, repLen : int) =
 type moose (repLen : int) =
   inherit animal (mSymbol, repLen)
 
-/// giveBirth gives a calf a position if the reproduction length reaches zero
+(*giveBirth calls updateReproduction so that reproduction will be counted down.
+It gives a new moose, a calf a position if the reproduction length reaches zero.
+giveBirth is call by tick*)
+/// <summary>
+/// giveBirth returns some or none and gives a position to a potential calf.
+/// </summary>
+/// <returns>
+/// some or none moose
+/// </returns>
   member this.giveBirth () =
     this.updateReproduction ()
     if this.reproduction = 0 then
@@ -40,7 +48,14 @@ type moose (repLen : int) =
     else
       None
 
-/// if the moose is not dead it calls giveBirth
+(* tick matches a moose position with some and none. If there is a moose, the
+function calls giveBirth. tick is called by updateMoose. *)
+/// <summary>
+/// If there is a moose, the function calls giveBirth.
+/// </summary>
+/// <returns>
+/// some or none moose
+/// </returns>
   member this.tick () : moose option =
     match this.position with
     | Some position -> (this.giveBirth ())
@@ -59,7 +74,15 @@ type wolf (repLen : int, hungLen : int) =
   member this.resetHunger () =
     _hunger <- hungLen
 
-/// giveBirth gives a cub a position when the reproduction length reaches zero
+(*giveBirth calls updateReproduction so that reproduction will be counted down.
+It gives a new wolf - a cub a position if the reproduction length reaches zero.
+giveBirth is call by tick*)
+/// <summary>
+/// giveBirth returns some or none and gives a position to a potential cub.
+/// </summary>
+/// <returns>
+/// some or none wolf
+/// </returns>
   member this.giveBirth () =
     this.updateReproduction ()
     if this.reproduction <= 0 then
@@ -67,7 +90,14 @@ type wolf (repLen : int, hungLen : int) =
     else
       None
 
-/// if the wolf is not dead, it calls updateHunger and giveBirth
+(* tick matches a wolf position with some and none. If there is a wolf, the
+function calls updateHunger and giveBirth. tick is called by updateWolf. *)
+/// <summary>
+/// If there is a new wolf, the function calls updateHunger and giveBirth.
+/// </summary>
+/// <returns>
+/// some or none wolf
+/// </returns>
   member this.tick () : wolf option =
     match this.position with
     | Some position -> (this.updateHunger (); this.giveBirth ())
@@ -218,7 +248,7 @@ from the lists. It is called by tick. *)
 /// </summary>
 /// <param name="mosList">a mutable moose list</param>
 /// <param name="wofList">a mutable wolf list</param>
-/// <returns>null</returns>
+/// <returns>unit</returns>
   let rec processLists (mosList: moose List, wofList : wolf List) =
     let mutable mList = mosList
     let mutable wList = wofList
@@ -257,47 +287,65 @@ from the lists. It is called by tick. *)
   member this.countMoose = _board.moose.Length
   member this.countWolf = _board.wolves.Length
   member this.board = _board
+
+(*tick calls for procesLists that updates different entities. So every time a
+tick is called, the environment at the board is updated. the number of ticks is
+determinated in the terminal when the libary is compiled. *)
+/// <summary>
+/// tick calls processLists.
+/// the lists.
+/// </summary>
+/// <returns> unit, da processList returnerer unit.
+///</returns>
   member this.tick () =
     processLists (_board.moose, _board.wolves)
+
 /// test members of functions in scope of environment class
-  member this.testBoard = _board
-
-  member this.testMooseNabour =
-    let moose = _board.moose.[1]
-    printfn "checkNabour of random moose from isleRoyale over the course of
-3 checkNabour calls:"
-    for i = 1 to 3 do
-      printfn "%A. run: %A" i (checkNabour _board moose)
-      updateMoose _board moose
-
-  member this.testWolfNabour =
-    let wolf = _board.wolves.[1]
-    printfn "checkNabour of random wolf from isleRoyale over the course of
-3 checkNabour calls:"
-    for i = 1 to 3 do
-      printfn "%A. run: %A" i (checkNabour _board wolf)
-      updateWolf _board wolf
-
   member this.testUpdateMoose =
-    let moose = _board.moose.[1]
-    printfn "Position and reproduction value of random moose from isleRoyale
-over the course of 4 updateMoose calls:"
-    for i = 1 to 4 do
-    printfn "%A. update: Position: %A, Reproduction value: %A" i moose.position
-     moose.reproduction
-    (updateMoose _board moose)
+    let testMoose = _board.moose.[2]
 
-  member this.testUpdateWolf =
-    let wolf = _board.wolves.[1]
-    printfn "Position and reproduction value of random wolf from isleRoyale
-over the course of 4 updateWolf calls:"
     for i = 1 to 4 do
-    printfn "%A. update: Position: %A, Repro. value: %A, Hunger: %A" i
-     wolf.position  wolf.position wolf.hunger
-    (updateWolf _board wolf)
+      if testMoose.reproduction = 1 then
+        printfn "Reproduction value: %A" testMoose.reproduction
+        let rep =
+          match testMoose.tick () with
+          | Some m -> true
+          |_ -> false
+        printfn "Test of tick.moose when moose repLen = 1. Exp. output: Some m - %b" rep
 
-  member this.testProcessLists =
-    processLists (_board.moose, _board.wolves)
+      else
+        printfn "Reproduction value: %A" testMoose.reproduction
+        printfn "Test of tick.moose when moose repLen <> 1. Exp. output: None - %b" (testMoose.tick () = (None))
+
+// IKKE RIGTIGE TESTS - BARE AFPRØVNING
+//   member this.testBoard = _board
+
+//   member this.testMooseNabour =
+//     let moose = _board.moose.[1]
+//     printfn "checkNabour of random moose from isleRoyale over the course of
+// 3 checkNabour calls:"
+//     for i = 1 to 3 do
+//       printfn "%A. run: %A" i (checkNabour _board moose)
+//       updateMoose _board moose
+
+//   member this.testWolfNabour =
+//     let wolf = _board.wolves.[1]
+//     printfn "checkNabour of random wolf from isleRoyale over the course of
+// 3 checkNabour calls:"
+//     for i = 1 to 3 do
+//       printfn "%A. run: %A" i (checkNabour _board wolf)
+//       updateWolf _board wolf
+//   member this.testUpdateWolf =
+//     let wolf = _board.wolves.[1]
+//     printfn "Position and reproduction value of random wolf from isleRoyale
+// over the course of 4 updateWolf calls:"
+//     for i = 1 to 4 do
+//     printfn "%A. update: Position: %A, Repro. value: %A, Hunger: %A" i
+//      wolf.position  wolf.position wolf.hunger
+//     (updateWolf _board wolf)
+
+//   member this.testProcessLists =
+//     processLists (_board.moose, _board.wolves)
 
   override this.ToString () =
     let arr = draw _board

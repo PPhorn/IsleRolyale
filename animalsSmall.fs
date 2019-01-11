@@ -317,7 +317,7 @@ determinated in the terminal when the libary is compiled. *)
         printfn "Reproduction value: %A" testMoose.reproduction
         printfn "Test of tick.moose when moose repLen <> 1. Exp. output: None - %b" (testMoose.tick () = (None))
 
-// IKKE RIGTIGE TESTS - BARE AFPRØVNING
+// IKKE RIGTIGE TESTS - BARE AFPROEVNING
 //   member this.testBoard = _board
 
 //   member this.testMooseNabour =
