@@ -94,10 +94,11 @@ type environment =
     /// Perform a tick by performing all animal's ticks in random order. Animals perform the following actions: Calves and cubs are added if there is room in a neighbouring position. Wolves eat a random Moose in a neighbouring position. If animals do not give birth, eat or are eaten, then they move to an available neighbouring position.
     member tick : unit -> unit
     /// Test members below
-    member testBoard : board
-    member testMooseNabour : unit
-    member testWolfNabour : unit
     member testUpdateMoose : unit
-    member testUpdateWolf : unit
-    member testProcessLists : unit
+    //Not valid tests
+    // member testBoard : board
+    // member testMooseNabour : unit
+    // member testWolfNabour : unit
+    // member testUpdateWolf : unit
+    // member testProcessLists : unit
   end
