@@ -287,8 +287,19 @@ from the lists. It is called by tick. *)
   member this.countMoose = _board.moose.Length
   member this.countWolf = _board.wolves.Length
   member this.board = _board
+
+(*tick calls for procesLists that updates different entities. So every time a
+tick is called, the environment at the board is updated. the number of ticks is
+determinated in the terminal when the libary is compiled. *)
+/// <summary>
+/// tick calls processLists.
+/// the lists.
+/// </summary>
+/// <returns> null
+///</returns>
   member this.tick () =
     processLists (_board.moose, _board.wolves)
+
 /// test members of functions in scope of environment class
   member this.testBoard = _board
 

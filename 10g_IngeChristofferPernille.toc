@@ -1,0 +1,23 @@
+\contentsline {section}{\numberline {0.1}Preface}{2}{section.0.1}
+\contentsline {section}{\numberline {0.2}Introduction}{2}{section.0.2}
+\contentsline {section}{\numberline {0.3}Problem analysis \& design}{2}{section.0.3}
+\contentsline {subsection}{\numberline {0.3.1}Environment}{3}{subsection.0.3.1}
+\contentsline {subsection}{\numberline {0.3.2}Ticks}{3}{subsection.0.3.2}
+\contentsline {subsection}{\numberline {0.3.3}Moose}{3}{subsection.0.3.3}
+\contentsline {subsection}{\numberline {0.3.4}Wolwes}{3}{subsection.0.3.4}
+\contentsline {section}{\numberline {0.4}Program description}{3}{section.0.4}
+\contentsline {subsection}{\numberline {0.4.1}processList}{3}{subsection.0.4.1}
+\contentsline {subsection}{\numberline {0.4.2}checkNabour}{4}{subsection.0.4.2}
+\contentsline {subsection}{\numberline {0.4.3}updateWolf}{4}{subsection.0.4.3}
+\contentsline {section}{\numberline {0.5}Test}{5}{section.0.5}
+\contentsline {subsection}{\numberline {0.5.1}Test of \texttt {checkNabour}}{5}{subsection.0.5.1}
+\contentsline {subsection}{\numberline {0.5.2}Test of \texttt {updateMoose} \& \texttt {updateWolf}}{5}{subsection.0.5.2}
+\contentsline {subsection}{\numberline {0.5.3}Test of \texttt {processLists}}{6}{subsection.0.5.3}
+\contentsline {section}{\numberline {0.6}Experiments}{6}{section.0.6}
+\contentsline {subsection}{\numberline {0.6.1}Board size}{6}{subsection.0.6.1}
+\contentsline {subsection}{\numberline {0.6.2}Hunger length}{7}{subsection.0.6.2}
+\contentsline {subsection}{\numberline {0.6.3}Reproduction length}{8}{subsection.0.6.3}
+\contentsline {section}{\numberline {0.7}Conclusion and discussion}{9}{section.0.7}
+\contentsline {section}{\numberline {0.8}Appendix}{10}{section.0.8}
+\contentsline {subsection}{\numberline {0.8.1}User manual}{10}{subsection.0.8.1}
+\contentsline {subsection}{\numberline {0.8.2}Application code}{10}{subsection.0.8.2}

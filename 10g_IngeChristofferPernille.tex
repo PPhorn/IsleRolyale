@@ -1,5 +1,6 @@
 % !TEX encoding = UTF-8 Unicode
 \documentclass[a4paper]{report}
+\usepackage[utf8]{inputenc}
 \usepackage{tikz}
 \usepackage[margin=2.5cm]{geometry}
 \usepackage{hyperref}
@@ -45,18 +46,19 @@
 \tikzstyle{line} = [draw, -latex]
 
 
+\tableofcontents
+\newpage
 
-
-\section*{Preface}
+\section{Preface}
 As our first semester course in Programming and Problem Solving has entered a new programming paradigm, namely object oriented (OO) programming, we, three budding computer scientists have build a small environment based on the small island Isle Royale. We've used the multi paradigm programming language Fsharp (F\#), to code our entire OO environment.
 
-\section*{Introduction}
+\section{Introduction}
 Isle Royale is a small desolate island located in Lake Superior split by the North America-Canadian border. The island is inhabited by wolves and moose. The population of the two mammals, predator and prey have shown over time to be highly interdependent.
 Through no less than 5 decades the research project "Wolves and Moose of Isle Royale" has monitored the lives and deaths of the animals of the island, making \textit{"the longest continuous study of any predator-prey system in the world."} \url{(http://www.isleroyalewolf.org/overview/overview/at_a_glance.html)}
 
 
 
-\section*{Problem analysis \& design}
+\section{Problem analysis \& design}
 As given by the assignment, the entire Isle Royale environment is implemented in f\# by use of the object oriented programming paradigm.
 
 The main task of the assignment was to simulate the flow and development of the animal population of Isle Royale in an enclosed environment.
@@ -112,46 +114,46 @@ This included an animal object, moose object (unfinished), wolf object (unfinish
 \end{figure}
 
 
-\subsection*{Environment}
+\subsection{Environment}
 The enviroment includes a board. The board consists of a width and two lists of animals. In environment, there are several crucial functions that deals with the problems of updating the animals and drawing the board, e.g. \texttt{updateMoose}, \texttt{updateWolf}, \texttt{draw}  and \texttt{tick}.
 
-\subsubsection*{Ticks}
+\subsection{Ticks}
 The method \texttt{tick} calls the function \texttt{procesLists} that updates different entities, as mentioned. So every time a tick is called, the environment at the board is updated. Thereby, tick functions as a time unity and every time a tick is called, we can imagine that a month or perhaps a week has passed. At Figure 1, we see that the \texttt{tick} has a central position that activates updates for the animals.
 
-\subsubsection*{Moose}
+\subsection{Moose}
 The Moose object is created to live a simple life, so to speak. Aside from the fields and members inherited from the animal object, it's methods consists of just two members: One enabling reproduction and one handling the update of the reproduction and thereby the potential birth of a calf.
 
-\subsubsection*{Wolwes}
+\subsection{Wolwes}
 The wolf object also inherits all fields and members of the animal object. The wolf, as the Moose, can reproduce and give birth to a cub in order to increase the population of wolfs on the island. Moreover the wolf can eat a moose populating a nearby position in the environment. 
 
-\subsection*{Program description}
+\section{Program description}
 
 The environment is handling the animals and drawing the board. The main function in environment is \texttt{processLists}  as it is the only functions called when the method tick is called.
 \texttt{processLists} selects an animal passes it on to one of the two helper functions called \texttt{handleMoose}  and \texttt{handleWolf}. In those any dead animals are removed from the board and the selected animal is passed further on to the one of the two functions \texttt{updateMoose} and \texttt{updateWolf}. The \texttt{updateMoose} function is responsible for the moose either giving birth or moving to a new position.
 The \texttt{updateWolf} function does the same, but also has the added capability of making the wolf eat a moose if any is located in one of the neighbouring coordinates.
 
-\subsubsection*{processList}
+\subsection{processList}
 \texttt{processLists} is shown below. It gets a wolves list and a moose list as input and remove dead animals from them in \texttt{handleWolf} and \texttt{handleMoose}. Via a match, it then processes those lists.
 
-\lstinputlisting[language=FSharp, firstline=222, lastline=247]{animalsSmall.fs}
+\lstinputlisting[language=FSharp, firstline=252, lastline=277]{animalsSmall.fs}
 
-\subsubsection*{checkNabour}
+\subsection{checkNabour}
 The check \texttt{checkNabour} function returns a list with the neighbouring coordinates and their symbols. The update functions use it to find out whether the wolf should eat a moose, give birth or move by checking for moose or empty symbols.
 
 
-\lstinputlisting[language=FSharp, firstline=121, lastline=136]{animalsSmall.fs}
+\lstinputlisting[language=FSharp, firstline=151, lastline=166]{animalsSmall.fs}
 
-\subsubsection*{updateWolf}
+\subsection{updateWolf}
 
 
 The code from \texttt{updateWolf} is below. First is udates a tick to see whether the wolf has died. Then it looks for a moose in the neighbour position to find out whether it should eat. If so, the wolf eats the moose and goes to the moose' position. If it is not so, the function looks for an empty position if a cub is born, so that it can give birth to it by giving the cub a position. Else, it moves to that position itself. 
 
 As mentioned, \texttt{updateMoose} is very similar, but shorter. Therefore it is not shown here.
 
-\lstinputlisting[language=FSharp, firstline=178, lastline=209]{animalsSmall.fs}
+\lstinputlisting[language=FSharp, firstline=208, lastline=239]{animalsSmall.fs}
 
 
-\subsection*{Test}
+\section{Test}
 
 Seeing as we were given a substantial code base created by our professor Jon Sporring, we were left with a limited amount of functions, which required testing.
 Our first challenge in testing our own contribution to the code, was how to access local functions in the scope of classes and members, from outside “their”git  class, as it is standard in object oriented programming, that local functions are not editable nor accessible from outside their ambient scope.
@@ -166,20 +168,20 @@ In all we’ve tested the following functions, which are all described in the se
 
 We also did an initial test of the \texttt{board} function, which mainly served as a pilot test of our general method for testing local functions.
 
-\subsubsection{Test of \texttt{checkNabour}}
+\subsection{Test of \texttt{checkNabour}}
 In the test of the \texttt{checkNabour} function, we tested with both a Moose and Wolf as animal input. On each animal object we did a run of 3 coherent calls to the function on the same randomly picked moose and wolf respectively, thereby disclosing a variety of function outputs, showing that the given animal does infect change position on the board, as the surrounding coordinates sometimes changes, and sometimes stays the same, in the case of the animal giving birth to a calf/cup.
 
-\subsubsection{Test of \texttt{updateMoose} \&  \texttt{updateWolf}}
+\subsection{Test of \texttt{updateMoose} \&  \texttt{updateWolf}}
 As with the test of  \texttt{checkNabour}, when testing \texttt{updateMoose} and  \texttt{updateWolf} we did a series of coherent calls to the function on a randomly picked moose and wolf. Again this shows how the position and reproduction length is updated as well as the hunger length, when testing the \texttt{updateWolf}. We see how the position coordinates and reproduction and hunger values change or remain the same, depending on whether a wolf eats or whether either of the animals give birth, thereby does not move and in which case their reproduction length is reset to it’s initial value. 
 
-\subsubsection{Test of \texttt{processLists}}
+\subsection{Test of \texttt{processLists}}
 Testing of the \texttt{processLists} function results in the least exiting result, as the output of a successful run of this function in any case will result in \texttt{<null>}, when running the function 
 independent of the rest of the IsleRoyale program.
 
-\subsection*{Experiments}
+\section{Experiments}
 We have simulated three interesting experiments. One about hunger length, one about the size of the board and one about reproduction length. Small changes of the values shows a significant effect at the results. 
 
-\subsubsection*{Board size}
+\subsection{Board size}
 The following comparison is about board width. If the board is large, as on Figure 2 where it is 40 X 40, the number of animals becomes rather large and the moose and the wolves co-exist throughout at least 80 ticks. 
 
 \begin{figure}[H]
@@ -196,7 +198,7 @@ Figure 3 represent a simulated environment where the board is only 20 X 20. Here
 \caption{Input values: ticks: 80, board width: 20, moose: 20, moose rep-length: 5, wolves: 5, wolf rep-length: 5, wolf hunger length: 8}
 \end{figure}
 
-\subsubsection*{Hunger length}
+\subsection{Hunger length}
 
 Another experiment we have conducted focuses on the hunger length of the wolves. At Figure 4, the hunger length is rather shot, it is set to 4, so after 4 ticks the wolf will either die or have found a moose to eat. The result is, that only after 10 ticks the wolves are extinct while the moose keeps to increase in number.
 
@@ -217,7 +219,7 @@ When the hunger length of the wolves is at 6, the wolves can exist for longer wi
 \end{figure}
 
 
-\subsubsection*{Reproduction length}
+\subsection{Reproduction length}
 At Figure 6 and Figure 7 we see an experiment with variation in reproduction length. At Figure 6, the moose and the wolves have a longer reproduction length than on Figure 7. In both cases the number of moose increase rapidly within the first 20 ticks and then it stagnates.
  
 At Figure 6, we clearly see that the number of moose is dependent of the number of wolves and vice versa. At approximately tick 100 the number of moose decrease rapidly while the number of wolves reach 80 - the relation is about 1/5 the amount of moose. Then the number of wolves decreases again when the number of moose has reached a level under 200. The wolves die because of the small amount of food for them. \newline 
@@ -238,14 +240,14 @@ If we change the reproduction length only by one, we see that the number of moos
 \caption{Input values: ticks: 160, boardw: 25, moose: 5, moose rep-length: 3, wolves: 5, wolf rep-length: 4, wolf hunger length: 4}
 \end{figure}
 
-\subsection*{Conclusion and discussion}
+\section{Conclusion and discussion}
 We solved the problem, and programmed the environment to mimic the real world to a certain degree. It is obviously difficult to represent a complicated environment with only a handful of parameters, but the representation that we have build is has many similarities to the environment. There is a clear correlation between the two population of animals.
 To improve the representation we could have included the other animals in the environment, the seasons, improved the interaction between the wolf and the moose, and considered that the wolf is a social animal. Another aspect that we could have considered would be that of the breeding season and that a moose usually get one calf while the wolf tends to get several cubs.
 
 \newpage
-\section*{Appendix}
+\section{Appendix}
 
-\subsection*{User manual}
+\subsection{User manual}
 The application of the Isle Royale is designed to take certain values to initialize the simulation of the wolf and moose population. Specifically the application takes 7 parameters and one file name designed to be given in the following order:
 \begin{enumerate}
 \item Amount of ticks the users wishes to simulate
@@ -272,7 +274,7 @@ After running the application with the mono command, the user will find a new lo
 
 To create a data plot in .pdf through the console write “pdflatex plot\_isleRoyale.tex” in the terminal/command prompt.
 
-\subsection*{Application code}
+\subsection{Application code}
 \lstset{language=FSharp}
 \lstinputlisting{animalsSmall.fs}
 \end{document}
